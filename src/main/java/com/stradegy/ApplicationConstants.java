@@ -10,4 +10,6 @@ public class ApplicationConstants {
 
 	public static final String API_HISTORY_PREFIX = "https://openexchangerates.org/api/historical/";
 	public static final String API_POSTFIX = "?app_id=44fb511d7a414e8486c7a2dd689ce547";
+
+	public static final String DUKASCOPY_PATH = "C:/Users/User/AppData/Roaming/Tickstory/Tickstory Lite/Data/";
 }

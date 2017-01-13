@@ -12,4 +12,5 @@ public enum Currency {
 	AUD,
 	NZD,
 	CHF,
+	HKD,
 }

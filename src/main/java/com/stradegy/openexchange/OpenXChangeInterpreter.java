@@ -1,15 +1,8 @@
 package com.stradegy.openexchange;
 
-import com.google.gson.GsonBuilder;
 import com.stradegy.ApplicationConstants;
-import com.stradegy.enums.Currency;
-import com.stradegy.enums.CurrencyPair;
-import com.stradegy.quotes.FxQuote;
 import org.springframework.stereotype.Service;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import java.io.*;
 import java.net.*;
 
@@ -18,8 +11,6 @@ import java.net.*;
  */
 @Service("OpenXChangeInterpreter")
 public class OpenXChangeInterpreter {
-
-	private Map<String, Set<FxQuote>> obtainedQuotes = new HashMap<String, Set<FxQuote>>();
 
 	public String composeHistoryRequest(Date date){
 		StringBuffer stringBuffer = new StringBuffer(ApplicationConstants.API_HISTORY_PREFIX);
@@ -43,19 +34,6 @@ public class OpenXChangeInterpreter {
 		return result.toString();
 	}
 
-	public FxQuote getQuoteForDate(Date date, CurrencyPair currencyPair){
-		Currency target = currencyPair.getNonUSDCurrency();
-		try{
-			String result = fetchQueryResult(composeHistoryRequest(date));
-
-
-
-			//System.out.println(result);
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 
 }
