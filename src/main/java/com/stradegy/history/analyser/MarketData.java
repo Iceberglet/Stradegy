@@ -2,6 +2,7 @@ package com.stradegy.history.analyser;
 
 import com.stradegy.enums.Product;
 import com.stradegy.history.quotes.BaseQuote;
+import com.stradegy.utils.Day;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,12 @@ import java.util.Map;
 /**
  * Created by User on 16/1/2017.
  */
+//Market Data of ONE day
 public class MarketData {
+
+	Day day;
+
+	List<BaseQuote> quotes;
 
 	Map<Product, List<BaseQuote>> recentQuotes;
 
