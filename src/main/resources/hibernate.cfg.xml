@@ -1,0 +1,21 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.SQLServer2012Dialect
+		</property>
+		<property name="dynamic-update">false</property>
+		<!--<property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>-->
+		<property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+
+		<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=MIN_EXPERIMENT;instance=SQLEXPRESS</property>
+		<property name="connection.username">sa</property>
+		<property name="connection.password">sadmin</property>
+		<property name="hibernate.connection.autocommit">true</property>
+
+		<!-- List of XML mapping files -->
+		<mapping resource="BaseQuote.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

@@ -29,5 +29,37 @@
     <bean id="appStradegy" class="com.stradegy.AppStradegy">
     </bean>
 
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <property name="configLocation" value="classpath:hibernate.cfg.xml">
+        </property>
+        <!--<property name="entityInterceptor">-->
+        <!--<bean class="com.finmechanics.audit.interceptor.AuditInterceptor" />-->
+        <!--</property>-->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dynamic-update">true</prop>
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <!--<prop key="hibernate.format_sql">true</prop>-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop>
+                <prop key="hibernate.connection.autocommit">false</prop>
+                <prop key="hibernate.default_entity_mode">dynamic-map</prop>
+                <prop key="hibernate.id.new_generator_mappings">false</prop>
+                <!-- <prop key="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</prop> -->
+
+                <!-- check db types before enabling -->
+                <!--prop key="hibernate.hbm2ddl.auto">validate</prop -->
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
+                <prop key="org.hibernate.envers.do_not_audit_optimistic_locking_field">false</prop>
+
+                <!-- envers properties -->
+                <prop key="hibernate.envers.autoRegisterListeners">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
 
 </beans>

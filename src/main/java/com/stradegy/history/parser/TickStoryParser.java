@@ -6,6 +6,8 @@ import com.stradegy.history.quotes.BaseQuote;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -14,7 +16,7 @@ import java.util.Date;
 public class TickStoryParser {
 
 	static final String PATH_DATA = "D:/MIN_EXPERIMENTS/Data/";
-	static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("YYYYMMDD:HH:MM:SS");
+	static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 
 	public static void parseProduct(Product product){
 		String productPath = PATH_DATA + product.name() + "/";
@@ -26,10 +28,11 @@ public class TickStoryParser {
 	}
 
 	//Parse and save into database
-	public static void scanFile(String path, Product product){
+	public static Collection<BaseQuote> scanFile(String path, Product product){
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
+		Collection<BaseQuote> res = new ArrayList<>();
 
 		try {
 			br = new BufferedReader(new FileReader(path));
@@ -38,15 +41,17 @@ public class TickStoryParser {
 
 				// use comma as separator
 				String[] lineData = line.split(cvsSplitBy);
-				Date date = DATETIME_FORMAT.parse(lineData[0] + ":" + lineData[1]);
+				String dateString = lineData[0] + " " + lineData[1];
+				Date date = DATETIME_FORMAT.parse(dateString);
 				Double open = Double.parseDouble(lineData[2]);
 				Double high = Double.parseDouble(lineData[3]);
 				Double low = Double.parseDouble(lineData[4]);
 				Double close = Double.parseDouble(lineData[5]);
 				Double volume = Double.parseDouble(lineData[6]);
 
-				System.out.println(date + "," + open + "," + high + "," + low + "," + close + "," + volume);
+//				System.out.println(date.getTime() + "," + open + "," + high + "," + low + "," + close + "," + volume);
 				BaseQuote newQuote = new BaseQuote(open, high, low, close, volume, date.getTime(), product);
+				res.add(newQuote);
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Skipping: " + path);
@@ -61,5 +66,6 @@ public class TickStoryParser {
 				}
 			}
 		}
+		return res;
 	}
 }

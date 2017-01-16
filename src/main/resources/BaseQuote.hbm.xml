@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.stradegy.history.quotes.BaseQuote" table="BASE_QUOTE">
+        <meta attribute="class-description">
+            This class contains the employee detail.
+        </meta>
+        <composite-id>
+            <key-property name="timestamp" column="TIME_STAMP" type="long"/>
+            <key-property name="product" column="PRODUCT">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">com.stradegy.enums.Product</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </key-property>
+        </composite-id>
+        <property name="open" column="OPEN_QUOTE" type="double"/>
+        <property name="close" column="CLOSE_QUOTE" type="double"/>
+        <property name="high" column="HIGH_QUOTE" type="double"/>
+        <property name="low" column="LOW_QUOTE" type="double"/>
+        <property name="volume" column="VOLUME" type="double"/>
+    </class>
+</hibernate-mapping>
