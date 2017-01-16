@@ -1,7 +1,9 @@
 package com.stradegy.history.parser;
 
+import com.stradegy.dao.HibernateDao;
 import com.stradegy.enums.Product;
 import com.stradegy.history.quotes.BaseQuote;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -9,26 +11,36 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 /**
  * Created by User on 13/1/2017.
  */
 public class TickStoryParser {
 
-	static final String PATH_DATA = "D:/MIN_EXPERIMENTS/Data/";
-	static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+	HibernateDao hibernateDao;
 
-	public static void parseProduct(Product product){
-		String productPath = PATH_DATA + product.name() + "/";
-		if(new File(productPath).exists())
+	static final String PATH_DATA = "D:/MIN_EXPERIMENTS/XMLData/";
+	static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+	static final int cacheSize = 10000;
+
+	public void setHibernateDao(HibernateDao hibernateDao){
+		this.hibernateDao = hibernateDao;
+	}
+
+	public void parseAndSaveProduct(Product product){
+		String productPath = PATH_DATA + product.name() + ".csv";
+		if(new File(productPath).exists()) {
 			System.out.println("Starting to parse: " + product.name());
+			scanAndSaveFile(productPath, product);
+		}
 		else {
-			System.out.println("Error");
+			System.out.println("Error. File Not Found: " + productPath);
 		}
 	}
 
 	//Parse and save into database
-	public static Collection<BaseQuote> scanFile(String path, Product product){
+	public void scanAndSaveFile(String path, Product product){
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -52,6 +64,12 @@ public class TickStoryParser {
 //				System.out.println(date.getTime() + "," + open + "," + high + "," + low + "," + close + "," + volume);
 				BaseQuote newQuote = new BaseQuote(open, high, low, close, volume, date.getTime(), product);
 				res.add(newQuote);
+
+				if(res.size() > cacheSize) {
+					hibernateDao.saveAll(res);
+					res = new ArrayList<>();
+					System.out.println("Parsed another " + cacheSize);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Skipping: " + path);
@@ -66,6 +84,7 @@ public class TickStoryParser {
 				}
 			}
 		}
-		return res;
+		hibernateDao.saveAll(res);
+		//return res;
 	}
 }

@@ -40,6 +40,7 @@ dependencies {
             'org.hibernate:hibernate-core:5.1.1.Final',
             "org.hibernate:hibernate-entitymanager:5.1.1.Final",
 //            "com.oracle:ojdbc14:10.2.0.3.0",
+            "org.projectlombok:lombok:1.16.12",
             'com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre8')
     testCompile("org.springframework:spring-test:4.3.5.RELEASE")
 }
