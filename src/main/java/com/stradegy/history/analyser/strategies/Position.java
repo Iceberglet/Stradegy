@@ -15,5 +15,7 @@ public class Position {
 
 	private Double notional;		//Positive For Buy, Negative For Sell
 	private Double averagePrice;
+	private Double takeProfit;
+	private Double stopLoss;
 
 }

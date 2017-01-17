@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Created by User on 13/1/2017.
@@ -59,8 +59,8 @@ public class HibernateDaoImpl implements HibernateDao {
 		return result;
 	}
 
-	@Override
-	public Collection<BaseQuote> query(Long timeStart, Long timeEnd, Product product) {
+	@Override	//Returns in ascending time order
+	public List<BaseQuote> query(Long timeStart, Long timeEnd, Product product) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		String queryString = "from BaseQuote where timestamp > :start and timestamp < :end and product = :product";
@@ -68,9 +68,11 @@ public class HibernateDaoImpl implements HibernateDao {
 		query.setParameter("start", timeStart);
 		query.setParameter("end", timeEnd);
 		query.setParameter("product", product);
-		Collection<BaseQuote> result = (Collection<BaseQuote>)query.list();
+		List<BaseQuote> result = (ArrayList<BaseQuote>)query.list();
 		session.getTransaction().commit();
 		session.close();
+
+		Collections.sort(result);
 		return result;
 	}
 }

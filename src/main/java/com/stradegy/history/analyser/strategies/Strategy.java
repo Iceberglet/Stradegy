@@ -1,26 +1,28 @@
 package com.stradegy.history.analyser.strategies;
 
-import com.stradegy.enums.Currency;
-import com.stradegy.enums.Product;
-import com.stradegy.history.analyser.MarketData;
+import com.stradegy.history.analyser.MarketDataContainer;
 import com.stradegy.history.analyser.actions.TradeAction;
+import com.stradegy.history.analyser.indicators.Indicator;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 
 /**
  * Created by User on 16/1/2017.
  */
+@NoArgsConstructor
+@Getter
 public abstract class Strategy {
 
-	private Portfolio portfolio;
+//	private Portfolio portfolio;
 
-	public Strategy(List<Product> products){
-		this.portfolio = new Portfolio(products, 10000D, Currency.SGD);
-	}
+	private Position position;
 
-	public abstract Collection<TradeAction> marketMoves(MarketData marketData);
+	private Double balance;
 
-	public Double evaluate(MarketData marketData){
-		return this.portfolio.netWorth(marketData);
-	}
+	protected List<Indicator> indicators;
+
+	public abstract void update(MarketDataContainer marketData);
+
 }

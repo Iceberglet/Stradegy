@@ -4,6 +4,7 @@ import com.stradegy.enums.Product;
 import com.stradegy.history.quotes.BaseQuote;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by User on 13/1/2017.
@@ -16,6 +17,6 @@ public interface HibernateDao {
 
 	BaseQuote query(Long timestamp, Product product);
 
-	Collection<BaseQuote> query(Long timeStart, Long timeEnd, Product product);
+	List<BaseQuote> query(Long timeStart, Long timeEnd, Product product);
 
 }

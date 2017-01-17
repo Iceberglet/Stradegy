@@ -1,6 +1,8 @@
 package com.stradegy.history.analyser;
 
+import com.stradegy.enums.Product;
 import com.stradegy.history.analyser.strategies.Strategy;
+import com.stradegy.history.quotes.BaseQuote;
 import com.stradegy.utils.Day;
 
 import java.util.List;
@@ -10,11 +12,13 @@ import java.util.List;
  */
 public interface MarketDataContainer {
 
-	public void subscribeStrategy(Strategy strategy);
+	void subscribeStrategy(Strategy strategy);
 
-	public void advanceTo(Day day);
+	void feed(MarketDayData data);
 
-	public MarketData getLast();
+	MarketDayData getLast();
 
-	public List<MarketData> getLatest(int days);
+	MarketDayData getXDaysBefore(int days);
+
+	List<MarketDayData> getLast(int days);
 }

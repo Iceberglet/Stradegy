@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 @IdClass(BaseQuotePK.class)
 @Table(name="BASE_QUOTE")
-public class BaseQuote implements Serializable{
+public class BaseQuote implements Serializable, Comparable<BaseQuote>{
 
 	@Column(name="OPEN_QUOTE")
 	protected Double open;
@@ -29,6 +29,17 @@ public class BaseQuote implements Serializable{
 	@Id
 	@Column(name="PRODUCT")
 	protected Product product;
+
+	@Override
+	public int compareTo(BaseQuote o) {
+		Long res = this.timestamp - o.timestamp;
+		if(res > 0L)
+			return 1;
+		if(res.equals(0L))
+			return 0;
+		else
+			return -1;
+	}
 
 	public BaseQuote(Double open, Double high, Double low, Double close, Double volume, Long timestamp, Product product) {
 		this.open = open;
