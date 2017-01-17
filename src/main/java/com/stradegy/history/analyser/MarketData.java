@@ -13,13 +13,11 @@ import java.util.Map;
 //Market Data of ONE day
 public class MarketData {
 
-	Day day;
+	public static final int cachedDays = 100;
 
-	List<BaseQuote> quotes;
+	private List<MarketDayData> history;
 
-	Map<Product, List<BaseQuote>> recentQuotes;
-
-	Map<Product, BaseQuote> latestQuotes;
+	private Product product;
 
 	Long earliestTimeStamp;
 
@@ -27,11 +25,4 @@ public class MarketData {
 
 	List<Product> products;
 
-	public MarketData(List<Product> products, Long startTime, Long cacheDuration){
-
-	}
-
-	public BaseQuote getPrice(Product product){
-		return latestQuotes.get(product);
-	}
 }

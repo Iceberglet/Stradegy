@@ -23,13 +23,16 @@ public class AppStradegy {
 
 	public void run(){
 //		openXChangeInterpreter.getQuoteForDate(new Date(), CurrencyPair.EURUSD);
-		//Arrays.asList(Product.values()).stream().forEach(v -> TickStoryParser.parseProduct(v));
-		//TickStoryParser.scanFile("D:/MIN_EXPERIMENTS/AUDUSD.csv", Product.AUDUSD);
-		TickStoryParser tickStoryParser = new TickStoryParser();
-		tickStoryParser.setHibernateDao(hibernateDao);
+		//TickStoryParser tickStoryParser = new TickStoryParser();
+		//tickStoryParser.setHibernateDao(hibernateDao);
 
 		for(Product product : Product.values()){
-			tickStoryParser.parseAndSaveProduct(product);
+			//tickStoryParser.parseAndSaveProduct(product);
+
+			for(Long x = 1480006740000L; x < 1484236740000L; x+=100000L){
+				Collection<BaseQuote> baseQuotes = hibernateDao.query(x, x + 100000L, product);
+				System.out.println(baseQuotes.size());
+			}
 		}
 
 		//hibernateDao.saveAll(quotes);
