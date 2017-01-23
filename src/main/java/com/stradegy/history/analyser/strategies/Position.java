@@ -15,7 +15,9 @@ public class Position {
 
 	private Double notional;		//Positive For Buy, Negative For Sell
 	private Double averagePrice;
-	private Double takeProfit;
-	private Double stopLoss;
+
+	public Position combine(Position other){
+		return new Position(this.notional + other.notional, )
+	}
 
 }
