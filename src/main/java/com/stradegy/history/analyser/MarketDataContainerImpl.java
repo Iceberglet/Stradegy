@@ -17,28 +17,25 @@ public class MarketDataContainerImpl implements MarketDataContainer{
 
 	List<MarketDayData> history;
 
-	HashMap<Integer, Indicator> indicators;
+	List<Indicator> indicators;
 
 	public MarketDataContainerImpl(){
 		this.subscribers = new ArrayList<>();
 		this.history = new ArrayList<>();
-		this.indicators = new HashMap<>();
-
+		this.indicators = new ArrayList<>();
 
 	}
 
 	@Override
 	public void subscribeStrategy(Strategy strategy) {
 		this.subscribers.add(strategy);
-		for(Indicator indicator : strategy.getIndicators()){
-			this.indicators.put(indicator.hashCode(), indicator);
-		}
+		this.indicators.addAll(strategy.getIndicators());
 	}
 
 	@Override
 	public void feed(MarketDayData data) {
 		this.history.add(data);
-		this.indicators.values().forEach(i->i.update(this));
+		this.indicators.forEach(i->i.update(this));
 		this.subscribers.forEach(s->s.update(this));
 
 		//Remove Redundant History
