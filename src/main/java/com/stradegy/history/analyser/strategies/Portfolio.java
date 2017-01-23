@@ -20,7 +20,7 @@ public class Portfolio {
 	public Portfolio(List<Product> products, Double balance, Currency currency){
 		this.positions = new HashMap<>();
 		for(Product product : products){
-			this.positions.put(product, new Position(0D, 0D, null, null));
+			this.positions.put(product, new Position(0D, 0D));
 		}
 		this.balance = balance;
 		this.originalBalance = balance;
@@ -29,15 +29,15 @@ public class Portfolio {
 
 	public void update(TradeAction action){
 		Position position = this.positions.get(action.getProduct());
+		Double notional = action.getNotional() * action.getBuySell().value;
+		Position newPosition = new Position(notional, action.getPrice());
 		if(position == null){
-			Double notional = action.getNotional() * action.getBuySell().value;
-			position = new Position(notional, action.getPrice(), null, null);
-			this.positions.put(action.getProduct(), position);
+			this.positions.put(action.getProduct(), newPosition);
+		} else {
+			this.positions.put(action.getProduct(), position.combine(newPosition));
 		}
 
-
 		this.balance -= action.getBuySell().value * action.getPrice() * action.getNotional();
-
 	}
 
 	public Double getBalance(){
