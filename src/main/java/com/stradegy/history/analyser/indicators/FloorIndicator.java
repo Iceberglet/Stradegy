@@ -25,6 +25,7 @@ public class FloorIndicator extends Indicator{
 			this.value = marketDataContainer.getLast(trackingDays).stream()
 					.map(a->a.getCandle().getLow())
 					.reduce(Double.MAX_VALUE, Math::min);
+			this.isReady = true;
 		} catch (IndexOutOfBoundsException e) {
 			this.value = null;
 		}

@@ -31,6 +31,7 @@ public class ATRIndicator extends Indicator{
 			this.value = marketDataContainer.getLast(trackingDays).stream()
 					.map(o->o.getCandle().getHigh() - o.getCandle().getLow())
 					.reduce(0D, (a, b)->a + b) / trackingDays;
+			this.isReady = true;
 		} catch (IndexOutOfBoundsException e) {
 			this.value = null;
 		}

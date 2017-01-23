@@ -24,6 +24,7 @@ public class CeilingIndicator extends Indicator{
 			this.value = marketDataContainer.getLast(trackingDays).stream()
 					.map(a->a.getCandle().getHigh())
 					.reduce(Double.MAX_VALUE, Math::max);
+			this.isReady = true;
 		} catch (IndexOutOfBoundsException e) {
 			this.value = null;
 		}
