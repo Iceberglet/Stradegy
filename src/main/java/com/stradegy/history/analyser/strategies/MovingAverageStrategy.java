@@ -4,6 +4,7 @@ import com.stradegy.enums.BuySell;
 import com.stradegy.history.analyser.MarketDataContainer;
 import com.stradegy.history.analyser.actions.TradeAction;
 import com.stradegy.history.analyser.indicators.MACDIndicator;
+import com.stradegy.utils.Logger;
 
 import java.util.Arrays;
 
@@ -44,33 +45,50 @@ public class MovingAverageStrategy extends Strategy {
 		} else {
 			//Compare the previous with current, and decide on position to take
 
-			//Upward Pressure
-			if(prevLag > prevSignal && lag < signal){
-				Double amount = this.getPortfolio().getBalance() * notionalRatio;
-				//If previously holding a short position
-				if(portfolio.getPosition().getNotional() < 0){
-					amount += Math.abs(portfolio.getPosition().getNotional());
+			//If currently holding short position
+			if(portfolio.getPosition().getNotional() < 0){
+				if(signal > lag){
+					TradeAction tradeAction = new TradeAction(null, Math.abs(portfolio.getPosition().getNotional()),
+							marketData.getLast().getCandle().getClose(), BuySell.Buy);
+					this.portfolio.update(tradeAction);
+					Logger.emit(this.getClass().getSimpleName(), "Closed Short Position, Net: " + this.portfolio.netWorth(marketData));
+				}
+			} else if (portfolio.getPosition().getNotional() > 0){
+				if(signal < lag){
+					TradeAction tradeAction = new TradeAction(null, Math.abs(portfolio.getPosition().getNotional()),
+							marketData.getLast().getCandle().getClose(), BuySell.Sell);
+					this.portfolio.update(tradeAction);
+					Logger.emit(this.getClass().getSimpleName(), "Closed Long Position, Net: " + this.portfolio.netWorth(marketData));
+				}
+			} else {
+				//Upward Pressure
+				if(prevLongLag > prevLongSignal && longLag < longSignal){
+					Double amount = this.getPortfolio().getBalance() * notionalRatio;
+					//If previously holding a short position
+//				if(portfolio.getPosition().getNotional() < 0){
+//					amount += Math.abs(portfolio.getPosition().getNotional());
+//				}
+
+					TradeAction tradeAction = new TradeAction(null, amount,
+							marketData.getLast().getCandle().getClose(), BuySell.Buy);
+					this.getPortfolio().update(tradeAction);
+					Logger.emit(this.getClass().getSimpleName(), "Opened Long Position, Net: " + this.portfolio.netWorth(marketData));
 				}
 
-				TradeAction tradeAction = new TradeAction(null, amount,
-						marketData.getLast().getCandle().getClose(), BuySell.Buy);
-				this.getPortfolio().update(tradeAction);
-			}
+				//Downward Pressure
+				else if (prevLongLag < prevLongSignal && longLag > longSignal){
+					Double amount = this.getPortfolio().getBalance() * notionalRatio;
+					//If previously holding a long position
+//				if(portfolio.getPosition().getNotional() > 0){
+//					amount += Math.abs(portfolio.getPosition().getNotional());
+//				}
+					TradeAction tradeAction = new TradeAction(null, amount,
+							marketData.getLast().getCandle().getClose(), BuySell.Buy);
+					this.getPortfolio().update(tradeAction);
+					Logger.emit(this.getClass().getSimpleName(), "Opened Short Position, Net: " + this.portfolio.netWorth(marketData));
 
-			//Downward Pressure
-			else if (prevLag < prevSignal && lag > signal){
-				Double amount = this.getPortfolio().getBalance() * notionalRatio;
-				//If previously holding a long position
-				if(portfolio.getPosition().getNotional() > 0){
-					amount += Math.abs(portfolio.getPosition().getNotional());
 				}
-				TradeAction tradeAction = new TradeAction(null, amount,
-						marketData.getLast().getCandle().getClose(), BuySell.Buy);
-				this.getPortfolio().update(tradeAction);
 			}
-
-			//We only take long pos if it agrees with long term trend
-
 		}
 	}
 }

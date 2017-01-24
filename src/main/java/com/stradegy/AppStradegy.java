@@ -2,6 +2,7 @@ package com.stradegy;
 
 import com.stradegy.dao.HibernateDao;
 import com.stradegy.enums.Product;
+import com.stradegy.history.analyser.Evaluator;
 import com.stradegy.history.quotes.BaseQuote;
 import com.stradegy.openexchange.OpenXChangeInterpreter;
 import org.jfree.chart.ChartFactory;
@@ -58,16 +59,21 @@ public class AppStradegy{
 	HibernateDao hibernateDao;
 
 	public void run(){
+
+		Evaluator.evaluate(hibernateDao);
+
+
+
 //		openXChangeInterpreter.getQuoteForDate(new Date(), CurrencyPair.EURUSD);
 		//TickStoryParser tickStoryParser = new TickStoryParser();
 		//tickStoryParser.setHibernateDao(hibernateDao);
 
 
-		ChartClass obj = new ChartClass("JFree Chart");
-
-		obj.pack();
-		RefineryUtilities.centerFrameOnScreen(obj);
-		obj.setVisible(true);
+//		ChartClass obj = new ChartClass("JFree Chart");
+//
+//		obj.pack();
+//		RefineryUtilities.centerFrameOnScreen(obj);
+//		obj.setVisible(true);
 
 
 //		for(Product product : Product.values()){
