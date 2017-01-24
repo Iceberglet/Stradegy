@@ -23,7 +23,6 @@ public class MarketDataContainerImpl implements MarketDataContainer{
 		this.subscribers = new ArrayList<>();
 		this.history = new ArrayList<>();
 		this.indicators = new ArrayList<>();
-
 	}
 
 	@Override
