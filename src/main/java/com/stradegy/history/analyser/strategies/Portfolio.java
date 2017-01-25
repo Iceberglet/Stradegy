@@ -32,6 +32,7 @@ public class Portfolio {
 	}
 
 	public void update(TradeAction action){
+
 //		Position position = this.positions.get(action.getProduct());
 		Double notional = action.getNotional() * action.getBuySell().value;
 		Position newPosition = new Position(notional, action.getPrice());

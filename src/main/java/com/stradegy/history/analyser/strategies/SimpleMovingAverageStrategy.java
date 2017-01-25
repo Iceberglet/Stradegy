@@ -60,7 +60,9 @@ public class SimpleMovingAverageStrategy extends Strategy {
 					this.portfolio.update(tradeAction);
 					Logger.emit(this.getClass().getSimpleName(), "Closed Long: " + formateInfo(marketData, lag, signal));
 				}
-			} else {
+			}
+
+
 				//Upward Pressure
 				if(prevLag > prevSignal && lag < signal){
 					Double amount = this.getPortfolio().getBalance() * notionalRatio;
@@ -87,7 +89,7 @@ public class SimpleMovingAverageStrategy extends Strategy {
 					Logger.emit(this.getClass().getSimpleName(), "Opened Short: " + formateInfo(marketData, lag, signal));
 
 				}
-			}
+
 		}
 		prevLag = lag;
 		prevSignal = signal;
