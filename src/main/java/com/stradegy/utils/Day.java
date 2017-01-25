@@ -1,5 +1,7 @@
 package com.stradegy.utils;
 
+import com.stradegy.ApplicationConstants;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,5 +33,10 @@ public class Day {
 
 	public Long getEnd(){
 		return CommonUtils.getEndOfDay(this.date);
+	}
+
+	@Override
+	public String toString(){
+		return ApplicationConstants.DATE_FORMAT.format(this.date);
 	}
 }

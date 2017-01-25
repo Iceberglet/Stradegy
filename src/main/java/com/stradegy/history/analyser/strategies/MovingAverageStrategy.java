@@ -31,11 +31,12 @@ public class MovingAverageStrategy extends Strategy {
 		MACDIndicator macdLongTerm = (MACDIndicator)this.indicators.get(1);
 		if(!macd.isReady() || !macdLongTerm.isReady())
 			return;
-
+		Logger.emit(this.getClass().getSimpleName(), marketData.getLast().getDay() + " - Received New Market Data, Current Portfolio: " + this.portfolio.netWorth(marketData));
 		Double signal = macd.getSignalEMA();
 		Double lag = macd.getValue();
 		Double longSignal = macdLongTerm.getSignalEMA();
 		Double longLag = macdLongTerm.getValue();
+//		Logger.emit(this.getClass().getSimpleName(), signal + " " + lag + " " + longLag + " " + longSignal);
 
 		if(prevLag == null || prevSignal == null || prevLongLag == null || prevLongSignal == null){
 			prevLag = lag;

@@ -41,8 +41,8 @@ public class MarketDataContainerImpl implements MarketDataContainer{
 		if(this.history.size() > cacheSize){
 			Iterator<MarketDayData> iter = this.history.listIterator();
 			for(int i = 0; i < cacheSize / 2; i++){
-				iter.remove();
 				iter.next();
+				iter.remove();
 			}
 		}
 	}

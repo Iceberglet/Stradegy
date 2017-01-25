@@ -6,6 +6,7 @@ import com.stradegy.enums.Product;
 import com.stradegy.history.analyser.strategies.MovingAverageStrategy;
 import com.stradegy.history.quotes.BaseQuote;
 import com.stradegy.utils.Day;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class Evaluator {
 		while(timeStamp < product.recordEnd){
 			Day day = (new Day(timeStamp)).addDay(1);
 			List<BaseQuote> quotesForTheDay = hibernateDao.query(day.getStart(), day.getEnd(), product);
-			marketDataContainer.feed(new MarketDayData(day, quotesForTheDay));
+			if(!CollectionUtils.isEmpty(quotesForTheDay)){
+				marketDataContainer.feed(new MarketDayData(day, quotesForTheDay));
+			}
+			timeStamp = day.getEnd();
 		}
 	}
 }
