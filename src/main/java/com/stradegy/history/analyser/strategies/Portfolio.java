@@ -51,6 +51,6 @@ public class Portfolio {
 
 	public Double netWorth(MarketDataContainer marketData){
 		Double price = marketData.getLast().getCandle().getClose();
-		return this.balance + ( this.position.getNotional() > 0? 1 : -1 ) * this.position.getNotional() * price;
+		return this.balance + /*( this.position.getNotional() > 0? 1 : -1 ) */ this.position.getNotional() * price;
 	}
 }

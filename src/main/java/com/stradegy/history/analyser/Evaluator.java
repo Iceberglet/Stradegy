@@ -4,6 +4,7 @@ package com.stradegy.history.analyser;
 import com.stradegy.dao.HibernateDao;
 import com.stradegy.enums.Product;
 import com.stradegy.history.analyser.strategies.MovingAverageStrategy;
+import com.stradegy.history.analyser.strategies.SimpleMovingAverageStrategy;
 import com.stradegy.history.quotes.BaseQuote;
 import com.stradegy.utils.Day;
 import org.springframework.util.CollectionUtils;
@@ -16,7 +17,10 @@ import java.util.List;
 public class Evaluator {
 
 	public static void evaluate(HibernateDao hibernateDao){
-		MovingAverageStrategy strategy = new MovingAverageStrategy(10, 6, 3, 26, 12, 9);
+//		MovingAverageStrategy strategy = new MovingAverageStrategy(26, 12, 9, 120, 90, 60);
+		SimpleMovingAverageStrategy strategy = new SimpleMovingAverageStrategy(26, 12, 9);
+
+
 		MarketDataContainer marketDataContainer = new MarketDataContainerImpl();
 		marketDataContainer.subscribeStrategy(strategy);
 

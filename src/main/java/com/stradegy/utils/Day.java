@@ -37,6 +37,6 @@ public class Day {
 
 	@Override
 	public String toString(){
-		return ApplicationConstants.DATE_FORMAT.format(this.date);
+		return ApplicationConstants.FORMAT_DATE.format(this.date);
 	}
 }

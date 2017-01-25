@@ -14,7 +14,7 @@ public class OpenXChangeInterpreter {
 
 	public String composeHistoryRequest(Date date){
 		StringBuffer stringBuffer = new StringBuffer(ApplicationConstants.API_HISTORY_PREFIX);
-		stringBuffer.append(ApplicationConstants.DATE_FORMAT.format(date));
+		stringBuffer.append(ApplicationConstants.FORMAT_DATE.format(date));
 		stringBuffer.append(".json");
 		stringBuffer.append(ApplicationConstants.API_POSTFIX);
 		return stringBuffer.toString();
