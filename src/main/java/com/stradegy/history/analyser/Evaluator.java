@@ -17,7 +17,7 @@ import java.util.List;
 public class Evaluator {
 
 	public static void evaluate(HibernateDao hibernateDao){
-		MovingAverageStrategy strategy = new MovingAverageStrategy(26, 12, 9, 80, 40, 24);
+		MovingAverageStrategy strategy = new MovingAverageStrategy(80, 40, 24, 200, 120, 60);
 //		SimpleMovingAverageStrategy strategy = new SimpleMovingAverageStrategy(26, 12, 9);
 
 

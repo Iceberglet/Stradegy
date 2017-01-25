@@ -19,7 +19,7 @@ public class MovingAverageStrategy extends Strategy {
 	private Double prevLongSignal;
 	private Double prevLongLag;
 
-	private Double notionalRatio = 0.2;
+	private Double notionalRatio = 1D;
 
 	public MovingAverageStrategy(int slow, int fast, int signal, int superSlow, int superFast, int superSignal){
 		super(new Portfolio(10000D), Arrays.asList(new MACDIndicator(fast, slow, signal),
