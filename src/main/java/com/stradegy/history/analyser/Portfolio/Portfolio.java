@@ -1,13 +1,8 @@
-package com.stradegy.history.analyser.strategies;
+package com.stradegy.history.analyser.Portfolio;
 
-import com.stradegy.enums.Currency;
-import com.stradegy.enums.Product;
 import com.stradegy.history.analyser.MarketDataContainer;
 import com.stradegy.history.analyser.actions.TradeAction;
 import lombok.Getter;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by User on 16/1/2017.

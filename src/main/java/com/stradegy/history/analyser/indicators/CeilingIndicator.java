@@ -15,15 +15,18 @@ public class CeilingIndicator extends Indicator{
 
 	@Override
 	public void update(MarketDataContainer marketDataContainer) {
+		super.update(marketDataContainer);
 
 		if(this.value != null){
-			this.value = Math.max(marketDataContainer.getLast().getCandle().getHigh(), this.value);
+			this.value = marketDataContainer.getLast(trackingDays).stream()
+					.map(a->a.getCandle().getHigh())
+					.reduce(Double.MIN_VALUE, Math::max);
 		}
 
 		else try {
 			this.value = marketDataContainer.getLast(trackingDays).stream()
 					.map(a->a.getCandle().getHigh())
-					.reduce(Double.MAX_VALUE, Math::max);
+					.reduce(Double.MIN_VALUE, Math::max);
 			this.isReady = true;
 		} catch (IndexOutOfBoundsException e) {
 			this.value = null;

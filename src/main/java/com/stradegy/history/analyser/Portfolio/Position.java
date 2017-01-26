@@ -1,4 +1,4 @@
-package com.stradegy.history.analyser.strategies;
+package com.stradegy.history.analyser.Portfolio;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

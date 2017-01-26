@@ -16,9 +16,12 @@ public class FloorIndicator extends Indicator{
 
 	@Override
 	public void update(MarketDataContainer marketDataContainer) {
+		super.update(marketDataContainer);
 
 		if(this.value != null){
-			this.value = Math.min(marketDataContainer.getLast().getCandle().getLow(), this.value);
+			this.value = marketDataContainer.getLast(trackingDays).stream()
+					.map(a->a.getCandle().getLow())
+					.reduce(Double.MAX_VALUE, Math::min);
 		}
 
 		else try {

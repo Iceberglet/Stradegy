@@ -3,7 +3,9 @@ package com.stradegy.history.analyser;
 
 import com.stradegy.dao.HibernateDao;
 import com.stradegy.enums.Product;
+import com.stradegy.fileService.CSVAssembler;
 import com.stradegy.history.analyser.strategies.MovingAverageStrategy;
+import com.stradegy.history.analyser.strategies.NullStrategy;
 import com.stradegy.history.analyser.strategies.SimpleMovingAverageStrategy;
 import com.stradegy.history.quotes.BaseQuote;
 import com.stradegy.utils.Day;
@@ -34,5 +36,26 @@ public class Evaluator {
 			}
 			timeStamp = day.getEnd();
 		}
+	}
+
+
+	public static void testIndicatorsAndHistoricalData(HibernateDao hibernateDao){
+		CSVAssembler csvAssembler = new CSVAssembler();
+		NullStrategy nullStrategy = new NullStrategy(csvAssembler);
+		MarketDataContainer marketDataContainer = new MarketDataContainerImpl();
+		marketDataContainer.subscribeStrategy(nullStrategy);
+
+		Product product = Product.EURUSD;
+		Long timeStamp = product.recordStart;
+		while(timeStamp < product.recordEnd){
+			Day day = (new Day(timeStamp)).addDay(1);
+			List<BaseQuote> quotesForTheDay = hibernateDao.query(day.getStart(), day.getEnd(), product);
+			if(!CollectionUtils.isEmpty(quotesForTheDay)){
+				marketDataContainer.feed(new MarketDayData(day, quotesForTheDay));
+			}
+			timeStamp = day.getEnd();
+			System.out.println("Tested Another Day: " + day.toString());
+		}
+		csvAssembler.toFile("TEST.csv");
 	}
 }

@@ -17,6 +17,7 @@ public class EMAIndicator extends Indicator {
 
 	@Override
 	public void update(MarketDataContainer marketDataContainer) {
+		super.update(marketDataContainer);
 		if(this.value == null){
 			try{
 				//Get SMA as the first average value

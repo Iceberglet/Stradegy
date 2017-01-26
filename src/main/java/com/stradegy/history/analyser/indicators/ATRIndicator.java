@@ -17,6 +17,7 @@ public class ATRIndicator extends Indicator{
 
 	@Override
 	public void update(MarketDataContainer marketDataContainer) {
+		super.update(marketDataContainer);
 
 		if(this.value != null){
 			BaseQuote candleToday = marketDataContainer.getLast().getCandle();

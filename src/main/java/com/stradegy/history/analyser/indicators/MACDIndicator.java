@@ -3,8 +3,7 @@ package com.stradegy.history.analyser.indicators;
 import com.stradegy.history.analyser.MarketDataContainer;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Iceberglet on 21/1/2017.
@@ -32,6 +31,7 @@ public class MACDIndicator extends Indicator {
 
 	@Override
 	public void update(MarketDataContainer marketDataContainer) {
+		super.update(marketDataContainer);
 		if(!this.isReady){
 			try{
 				//MACDIndicator is fast minus slow.
@@ -69,5 +69,13 @@ public class MACDIndicator extends Indicator {
 		if(slow != null && fast != null)
 			return fast - slow;
 		else return null;
+	}
+
+	@Override
+	public TreeMap<String, Object> toRowData(){
+		TreeMap<String, Object> res = new TreeMap<>();
+		res.put(this.getClass().getSimpleName() + "_LAG", this.value);
+		res.put(this.getClass().getSimpleName() + "_SIGNAL", this.signalEMA);
+		return res;
 	}
 }

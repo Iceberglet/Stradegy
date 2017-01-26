@@ -1,20 +1,19 @@
 package com.stradegy.history.analyser;
 
 import com.stradegy.enums.Product;
+import com.stradegy.fileService.RowRecord;
 import com.stradegy.history.quotes.BaseQuote;
 import com.stradegy.utils.Day;
 import lombok.Getter;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by User on 17/1/2017.
  */
 
 @Getter
-public class MarketDayData {
+public class MarketDayData implements RowRecord {
 
 	final Day day;
 
@@ -35,5 +34,20 @@ public class MarketDayData {
 			vol += baseQuote.getVolume();
 		}
 		this.candle = new BaseQuote(open, high, low, close, vol, day.getStart(), quotes.get(0).getProduct());
+	}
+
+	@Override
+	public Long getId() {
+		return day.getEnd();
+	}
+
+	@Override
+	public TreeMap<String, Object> toRowData() {
+		TreeMap<String, Object> res = new TreeMap<>();
+		res.put("OPEN", candle.getOpen());
+		res.put("HIGH", candle.getHigh());
+		res.put("LOW", candle.getLow());
+		res.put("CLOSE", candle.getClose());
+		return res;
 	}
 }

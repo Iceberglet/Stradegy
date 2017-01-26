@@ -1,15 +1,23 @@
 package com.stradegy.history.analyser.indicators;
 
+import com.stradegy.fileService.RowRecord;
 import com.stradegy.history.analyser.MarketDataContainer;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by User on 17/1/2017.
  */
-public abstract class Indicator {
+public abstract class Indicator implements RowRecord {
 
 	protected Double value = null;
 
 	protected boolean isReady = false;
+
+	//For Record Purpose
+	protected Long currentRecordId;
 
 	public boolean isReady() {
 		return isReady;
@@ -21,5 +29,19 @@ public abstract class Indicator {
 		else return value;
 	}
 
-	public abstract void update(MarketDataContainer marketDataContainer);
+	public void update(MarketDataContainer marketDataContainer){
+		this.currentRecordId = marketDataContainer.getLast().getDay().getEnd();
+	}
+
+	@Override
+	public Long getId() {
+		return currentRecordId;
+	}
+
+	@Override
+	public TreeMap<String, Object> toRowData() {
+		TreeMap<String, Object> res = new TreeMap<>();
+		res.put(this.getClass().getSimpleName(), this.value);
+		return res;
+	}
 }

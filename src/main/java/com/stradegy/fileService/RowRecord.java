@@ -1,6 +1,7 @@
 package com.stradegy.fileService;
 
-import java.util.Map;
+
+import java.util.TreeMap;
 
 /**
  * Created by User on 25/1/2017.
@@ -9,5 +10,5 @@ public interface RowRecord {
 
 	Long getId();
 
-	Map<String, Object> toRowData();
+	TreeMap<String, Object> toRowData();
 }

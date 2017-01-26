@@ -3,6 +3,7 @@ package com.stradegy.history.analyser.strategies;
 import com.stradegy.ApplicationConstants;
 import com.stradegy.enums.BuySell;
 import com.stradegy.history.analyser.MarketDataContainer;
+import com.stradegy.history.analyser.Portfolio.Portfolio;
 import com.stradegy.history.analyser.actions.TradeAction;
 import com.stradegy.history.analyser.indicators.MACDIndicator;
 import com.stradegy.utils.Logger;
