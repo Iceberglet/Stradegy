@@ -36,8 +36,8 @@ public class SimpleMovingAverageStrategy extends Strategy {
 //		Logger.emit(this.getClass().getSimpleName(), marketData.getLast().getDay() + " - Received New Market Data, Current Portfolio: " + this.portfolio.netWorth(marketData));
 
 		Double currentPrice = marketData.getLast().getCandle().getClose();
-		Double signal = macd.getSignalEMA();
-		Double lag = macd.getValue();
+		Double lag = macd.getMacdLag();
+		Double signal = macd.getValue();
 
 //		Logger.emit(this.getClass().getSimpleName(), signal + " " + lag + " " + longLag + " " + longSignal);
 
@@ -49,7 +49,7 @@ public class SimpleMovingAverageStrategy extends Strategy {
 
 				if(signal > lag /* || this.portfolio.getPosition().getAveragePrice() + atr.getValue() > currentPrice*/){
 					TradeAction tradeAction = new TradeAction(null, Math.abs(portfolio.getPosition().getNotional()),
-							marketData.getLast().getCandle().getClose(), BuySell.Buy);
+							currentPrice, BuySell.Buy);
 					this.portfolio.update(tradeAction);
 					Logger.emit(this.getClass().getSimpleName(), "Closed Short: " + formateInfo(marketData, lag, signal));
 				}
@@ -57,7 +57,7 @@ public class SimpleMovingAverageStrategy extends Strategy {
 
 				if(signal < lag /*|| this.portfolio.getPosition().getAveragePrice() - atr.getValue() > currentPrice*/){
 					TradeAction tradeAction = new TradeAction(null, Math.abs(portfolio.getPosition().getNotional()),
-							marketData.getLast().getCandle().getClose(), BuySell.Sell);
+							currentPrice, BuySell.Sell);
 					this.portfolio.update(tradeAction);
 					Logger.emit(this.getClass().getSimpleName(), "Closed Long: " + formateInfo(marketData, lag, signal));
 				}
@@ -72,7 +72,7 @@ public class SimpleMovingAverageStrategy extends Strategy {
 //					amount += Math.abs(portfolio.getPosition().getNotional());
 //				}
 					TradeAction tradeAction = new TradeAction(null, amount,
-							marketData.getLast().getCandle().getClose(), BuySell.Buy);
+							currentPrice, BuySell.Buy);
 					this.getPortfolio().update(tradeAction);
 					Logger.emit(this.getClass().getSimpleName(), "Opened Long: " + formateInfo(marketData, lag, signal));
 				}
@@ -85,7 +85,7 @@ public class SimpleMovingAverageStrategy extends Strategy {
 //					amount += Math.abs(portfolio.getPosition().getNotional());
 //				}
 					TradeAction tradeAction = new TradeAction(null, amount,
-							marketData.getLast().getCandle().getClose(), BuySell.Sell);
+							currentPrice, BuySell.Sell);
 					this.getPortfolio().update(tradeAction);
 					Logger.emit(this.getClass().getSimpleName(), "Opened Short: " + formateInfo(marketData, lag, signal));
 

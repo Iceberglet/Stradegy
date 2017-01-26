@@ -34,10 +34,10 @@ public class MovingAverageStrategy extends Strategy {
 		if(!macd.isReady() || !macdLongTerm.isReady())
 			return;
 //		Logger.emit(this.getClass().getSimpleName(), marketData.getLast().getDay() + " - Received New Market Data, Current Portfolio: " + this.portfolio.netWorth(marketData));
-		Double signal = macd.getSignalEMA();
-		Double lag = macd.getValue();
-		Double longSignal = macdLongTerm.getSignalEMA();
-		Double longLag = macdLongTerm.getValue();
+		Double lag = macd.getMacdLag();
+		Double signal = macd.getValue();
+		Double longLag = macdLongTerm.getMacdLag();
+		Double longSignal = macdLongTerm.getValue();
 		Double currentPrice = marketData.getLast().getCandle().getClose();
 
 //		Logger.emit(this.getClass().getSimpleName(), signal + " " + lag + " " + longLag + " " + longSignal);
