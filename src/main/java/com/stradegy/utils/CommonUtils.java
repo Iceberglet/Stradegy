@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -31,5 +32,11 @@ public class CommonUtils {
 
 	private static LocalDateTime dateToLocalDateTime(Date date) {
 		return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+	}
+
+	private static int millisecondsInDay = 1000 * 60 * 60 * 24;
+
+	public static Long daysBetween(Day from, Day to){
+		return (to.getEnd() - from.getEnd())/millisecondsInDay;
 	}
 }

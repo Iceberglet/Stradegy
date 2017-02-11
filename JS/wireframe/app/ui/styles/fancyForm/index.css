@@ -1,0 +1,133 @@
+.fancy {
+  position: relative;
+  margin-left: 6px;
+  background: inherit;
+  border-bottom: 1px solid gray;
+}
+
+.fancy .place-holder {
+  position: absolute;
+  color: gray;
+  transition: 0.3s;
+  font-size: 16px;
+  left: 5px;
+  bottom: 5px;
+}
+
+.fancy .place-holder.minimal {
+  -ms-transform: translate(0px, -20px); /* IE 9 */
+  -webkit-transform: translate(0px, -20px); /* Safari */
+  transform: translate(0px, -20px);
+  font-size: 13px;
+}
+
+.fancy .fancy-input-wrapper {
+  padding-right: 20px;
+}
+
+.fancy .fancy-input{
+  outline: none;
+  border: none;
+  width: 100%;
+  height: 16px;
+  font-size: 16px;
+  text-indent: 5px;
+  padding-bottom: 2px;
+  padding-top: 30px;
+  color: rgb(34, 34, 34);
+  background: inherit;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+.fancy .fancy-select-menu-wrapper.active {
+  max-height: 160px;
+  border: 1px solid lightgray;
+}
+
+.fancy .fancy-select-menu-wrapper {
+  position: absolute;
+  margin-top: 1px;  /*Leave room for blue animation */
+  top: 100%;
+  width: 100%;
+  overflow: hidden;
+  max-height: 0px;
+  transition: all 0.2s linear;
+}
+
+.fancy .fancy-select-menu {
+  position: relative;
+  max-height: 160px;
+  z-index: 999;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: white;
+
+  -ms-transform: translate(0,-100%);; /* IE 9 */
+  -webkit-transform: translate(0,-100%);;
+  transform: translate(0,-100%);;
+
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+
+.fancy .fancy-select-menu.active {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+  -ms-transform: translate(0,0);; /* IE 9 */
+}
+
+.fancy .fancy-select-menu .fancy-select-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.fancy .fancy-select-menu .fancy-select-item.highlight{
+  background: #c6f9ff;
+}
+
+.fancy .fancy-select-arrow {
+  position: absolute;
+  width: 12px;
+  right: 0px;
+  bottom: 8px;
+  padding-left: 4px;
+  color: rgb(128, 128, 128);
+
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -ms-transform: rotate(0deg);; /* IE 9 */
+  transition: all 0.2s linear;
+}
+
+.fancy .fancy-select-arrow.active {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);; /* IE 9 */
+}
+
+.fancy .underline{
+  background-color: dodgerblue;
+  height: 2px;
+  left: 0px;
+  bottom: 0px;
+  position: absolute;
+  -webkit-transform: scale(0, 1);
+  transform: scale(0, 1);
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  width: 100%;
+}
+
+.fancy .fancy-input:focus+.underline {
+  transform: scale(1);
+}

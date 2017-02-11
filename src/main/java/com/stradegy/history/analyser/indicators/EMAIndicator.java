@@ -15,6 +15,12 @@ public class EMAIndicator extends Indicator {
 		this.multiplier = 2.0D / (1 + trackingDays);
 	}
 
+	public EMAIndicator(int trackingDays, String name) {
+		this.trackingDays = trackingDays;
+		this.multiplier = 2.0D / (1 + trackingDays);
+		this.name = name;
+	}
+
 	@Override
 	public void update(MarketDataContainer marketDataContainer) {
 		super.update(marketDataContainer);

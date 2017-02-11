@@ -17,7 +17,10 @@ public class NullStrategy extends Strategy{
 	FloorIndicator floorIndicator;
 	CeilingIndicator ceilingIndicator;
 	ATRIndicator atrIndicator;
-	EMAIndicator emaIndicator;
+	EMAIndicator emaIndicator1;
+	EMAIndicator emaIndicator2;
+	EMAIndicator emaIndicator3;
+	EMAIndicator emaIndicator4;
 	MACDIndicator macdIndicator;
 
 	CSVAssembler csvAssembler;
@@ -26,13 +29,16 @@ public class NullStrategy extends Strategy{
 	public NullStrategy(CSVAssembler csvAssembler) {
 		super(new Portfolio(10000D), null);
 
-		floorIndicator = new FloorIndicator(20);
-		ceilingIndicator = new CeilingIndicator(20);
+//		floorIndicator = new FloorIndicator(20);
+//		ceilingIndicator = new CeilingIndicator(20);
 		atrIndicator = new ATRIndicator(20);
-		emaIndicator = new EMAIndicator(20);
-		macdIndicator = new MACDIndicator(12, 26, 9);
+		emaIndicator1 = new EMAIndicator(20, "_20");
+		emaIndicator2 = new EMAIndicator(40, "_40");
+		emaIndicator3 = new EMAIndicator(80, "_80");
+		emaIndicator4 = new EMAIndicator(120, "_120");
+//		macdIndicator = new MACDIndicator(12, 26, 9);
 
-		setIndicators(Arrays.asList( floorIndicator, ceilingIndicator,atrIndicator, emaIndicator, macdIndicator));
+		setIndicators(Arrays.asList( atrIndicator, emaIndicator1, emaIndicator2, emaIndicator3, emaIndicator4));
 
 		this.csvAssembler = csvAssembler;
 	}
@@ -40,15 +46,21 @@ public class NullStrategy extends Strategy{
 	@Override
 	public void update(MarketDataContainer marketData) {
 		csvAssembler.addRowRecord(marketData.getLast());
-		if(floorIndicator.isReady())
-			csvAssembler.addRowRecord(floorIndicator);
-		if(ceilingIndicator.isReady())
-			csvAssembler.addRowRecord(ceilingIndicator);
+//		if(floorIndicator.isReady())
+//			csvAssembler.addRowRecord(floorIndicator);
+//		if(ceilingIndicator.isReady())
+//			csvAssembler.addRowRecord(ceilingIndicator);
 		if(atrIndicator.isReady())
 			csvAssembler.addRowRecord(atrIndicator);
-		if(emaIndicator.isReady())
-			csvAssembler.addRowRecord(emaIndicator);
-		if(macdIndicator.isReady())
-			csvAssembler.addRowRecord(macdIndicator);
+		if(emaIndicator1.isReady())
+			csvAssembler.addRowRecord(emaIndicator1);
+		if(emaIndicator2.isReady())
+			csvAssembler.addRowRecord(emaIndicator2);
+		if(emaIndicator3.isReady())
+			csvAssembler.addRowRecord(emaIndicator3);
+		if(emaIndicator4.isReady())
+			csvAssembler.addRowRecord(emaIndicator4);
+//		if(macdIndicator.isReady())
+//			csvAssembler.addRowRecord(macdIndicator);
 	}
 }

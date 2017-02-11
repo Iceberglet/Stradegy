@@ -60,9 +60,9 @@ public class AppStradegy{
 
 	public void run(){
 
-		Evaluator.evaluate(hibernateDao);
+//		Evaluator.evaluate(hibernateDao);
 
-//		Evaluator.testIndicatorsAndHistoricalData(hibernateDao);
+		Evaluator.testIndicatorsAndHistoricalData(hibernateDao);
 
 
 

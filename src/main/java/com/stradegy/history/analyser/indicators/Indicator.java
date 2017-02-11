@@ -16,6 +16,8 @@ public abstract class Indicator implements RowRecord {
 
 	protected boolean isReady = false;
 
+	protected String name = "";
+
 	//For Record Purpose
 	protected Long currentRecordId;
 
@@ -38,10 +40,14 @@ public abstract class Indicator implements RowRecord {
 		return currentRecordId;
 	}
 
+	protected void setName(String name){
+		this.name = name;
+	}
+
 	@Override
 	public TreeMap<String, Object> toRowData() {
 		TreeMap<String, Object> res = new TreeMap<>();
-		res.put(this.getClass().getSimpleName(), this.value);
+		res.put(this.getClass().getSimpleName() + this.name, this.value);
 		return res;
 	}
 }

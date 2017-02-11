@@ -10,8 +10,8 @@ import java.util.Date;
  */
 public class Day {
 
-	Date date;
-	Calendar cal = Calendar.getInstance();
+	private Date date;
+	private Calendar cal = Calendar.getInstance();
 
 	public Day(Date date){
 		this.date = date;
@@ -34,6 +34,8 @@ public class Day {
 	public Long getEnd(){
 		return CommonUtils.getEndOfDay(this.date);
 	}
+
+	public Date getDate(){ return this.date; }
 
 	@Override
 	public String toString(){

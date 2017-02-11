@@ -21,4 +21,6 @@ public interface MarketDataContainer {
 	MarketDayData getXDaysBefore(int days);
 
 	List<MarketDayData> getLast(int days);
+
+	Double getCurrentPrice();
 }

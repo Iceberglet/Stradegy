@@ -48,6 +48,11 @@ public class MarketDataContainerImpl implements MarketDataContainer{
 	}
 
 	@Override
+	public Double getCurrentPrice() {
+		return this.getLast().getCandle().getClose();
+	}
+
+	@Override
 	public MarketDayData getLast() {
 		return this.history.get(this.history.size() - 1);
 	}
