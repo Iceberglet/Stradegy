@@ -32,13 +32,9 @@ export const CandleChart = React.createClass({
       data: this.props.candleData,
       dataGrouping: {
         units: [
-            [
-                'week', // unit name
-                [1] // allowed multiples
-            ], [
-                'month',
-                [1, 3]
-            ]
+            ['day', [3]],
+            ['week',[1, 2]],
+            ['month',[1, 3]]
         ]
       }
     })
