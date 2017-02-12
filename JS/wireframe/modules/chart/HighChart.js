@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Highcharts from 'highcharts/highstock';
 import { setDarkTheme } from './setTheme';
 
+setDarkTheme(Highcharts)
 // react handsontable wrapper
 export const HighChart=React.createClass({
   displayName: 'HighChart',
@@ -18,16 +19,16 @@ export const HighChart=React.createClass({
     }
   },
   componentWillReceiveProps(nextProps){
-    if(this.chart && this.chart.update){
-      this.chart.update(nextProps.options);
-    }
+    // if(this.chart && this.chart.update){
+    //   this.chart.update(nextProps.options);
+    // }
+    let {options, chartType} = {...nextProps}
+    this.reconstructChart(options, chartType)
   },
   shouldComponentUpdate(){
     return false;
   },
-  componentDidMount(){
-    setDarkTheme(Highcharts)
-    let options = this.props.options, chartType = this.props.chartType
+  reconstructChart(options, chartType){
     if (!options) {
       throw new Error('Config must be specified for the ' + this.displayName + ' component');
     }
@@ -45,6 +46,10 @@ export const HighChart=React.createClass({
         renderTo: node
       }
     }, this.props.callback);
+  },
+  componentDidMount(){
+    let options = this.props.options, chartType = this.props.chartType
+    this.reconstructChart(options, chartType)
   },
   getHighChart(){
     if (!this.chart) {

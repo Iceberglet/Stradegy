@@ -36,8 +36,7 @@ export const IndicatorPanel = React.createClass({
     this.setState((state)=>{
       state.indicatorList.splice(state.indicatorList.findIndex(i=>i===indicator), 1)
       return state
-    })
-    this.onChange()
+    }, this.onChange)
   },
 
   onChangeNewConfig(obj){
@@ -53,8 +52,7 @@ export const IndicatorPanel = React.createClass({
       s.indicatorList.push(s.newItem)
       s.newItem = {}
       return s
-    })
-    this.onChange()
+    }, this.onChange)
   },
 
   //{name: params: }

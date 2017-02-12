@@ -1,7 +1,8 @@
 export const setDarkTheme = (Highcharts)=>{
   Highcharts.theme = {
-     colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-        '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+    //  colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+    //     '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+     colors: ['#FF99FF', '#B266FF', '#FFB266', '#FFFF33', '#33FF33', '#FF99CC', '#66FFFF', '#FF66B2', '#66B2FF'],
      chart: {
         backgroundColor: {
            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },

@@ -42,6 +42,7 @@ export const CandleChart = React.createClass({
       result.push({
         type: 'line',
         name: k,
+        lineWidth: 1,
         data: this.props.indicatorsData[k]
       })
     })
@@ -56,8 +57,16 @@ export const CandleChart = React.createClass({
         title: {
             text: this.props.candleKey
         },
+        legend: {
+          enabled: true
+        },
         series: this.buildSeries()
     }
-    return <HighChart chartType='stockChart' options={options}/>
+    // if(this.chartWrapper){
+    //   let chart = this.chartWrapper.getHighChart()
+    //   chart.options = options
+    //   chart.redraw()
+    // }
+    return <HighChart ref={c=>{this.chartWrapper=c}} chartType='stockChart' options={options}/>
   }
 })
