@@ -131,3 +131,12 @@
 .fancy .fancy-input:focus+.underline {
   transform: scale(1);
 }
+
+
+.fancy-indicator-container {
+  max-width: 600px;
+}
+
+.fancy-indicator-container .fancy{
+  display: inline-block
+}

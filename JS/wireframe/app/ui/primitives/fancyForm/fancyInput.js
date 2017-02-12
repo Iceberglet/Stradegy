@@ -6,6 +6,7 @@ export const FancyInput = React.createClass({
     valueKey: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
     validateEvent: React.PropTypes.func,
+    readonly: React.PropTypes.bool,
     onConfirmChange: React.PropTypes.func //Returns {this.props.key: this.props.value}
   },
 
@@ -16,8 +17,15 @@ export const FancyInput = React.createClass({
   },
 
   componentWillReceiveProps(nextProps){
+    let newValue = nextProps.value || ''
     if(this.input){
-      this.input.value = nextProps.value || ''
+      this.input.value = newValue
+    }
+    if(newValue===''){
+      this.setState({
+        value: '',
+        selected: false
+      })
     }
   },
 
@@ -59,8 +67,12 @@ export const FancyInput = React.createClass({
     return <div className='fancy' style={{width: '200px'}}>
       <div className={placeHolderClass} onClick={this.onClickLabel}>{this.props.label}</div>
       <div className={'fancy-input-wrapper'}>
-        <input className='fancy-input' ref={i=>{this.input=i}} onKeyPress={this.validate} onFocus={this.onFocus}
-                onBlur={this.onBlur} defaultValue = {this.state.value} onChange={this.onChange}/>
+        {
+          this.props.readonly?
+          <div className='fancy-input'>{this.props.value}</div> :
+          <input className='fancy-input' ref={i=>{this.input=i}} onKeyPress={this.validate} onFocus={this.onFocus}
+                  onBlur={this.onBlur} defaultValue = {this.state.value} onChange={this.onChange} />
+        }
         <span className='underline' />
       </div>
     </div>
