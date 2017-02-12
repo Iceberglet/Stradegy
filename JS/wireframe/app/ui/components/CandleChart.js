@@ -1,41 +1,35 @@
 import React from 'react'
 import { HighChart } from 'chart'
-import * as DATA from 'app/data'
-import * as INDICATOR from 'app/logic/indicators'
 
 //Stock Format : [timestamp, open, high, low, close]
 
 export const CandleChart = React.createClass({
   propTypes: {
-    dataKey: React.PropTypes.string.isRequired,
-    indicators: React.PropTypes.array
+    // dataKey: React.PropTypes.string.isRequired,
+    // indicators: React.PropTypes.array,
+    candleKey: React.PropTypes.string.isRequired,
+    candleData: React.PropTypes.array.isRequired,
+    indicatorsData: React.PropTypes.object,   //key is indicator name
+    strategyData: React.PropTypes.array
   },
 
-  getInitialState(){
-    return this.getStateFromProps(this.props)
-  },
-
-  getStateFromProps(props){
-    if(DATA[props.dataKey]){
-      return {
-        title: props.dataKey,
-        data: DATA[props.dataKey]
-      }
-    } else {
-      console.error('Unable to find data of type: ', props.dataKey, 'Existing Data Obj: ', DATA)
-    }
-  },
-
-  componentWillReceiveProps(props){
-    this.setState(this.getStateFromProps(props))
-  },
+  // getInitialState(){
+  //   return this.getStateFromProps(this.props)
+  // },
+  //
+  // getStateFromProps(props){
+  // },
+  //
+  // componentWillReceiveProps(props){
+  //   this.setState(this.getStateFromProps(props))
+  // },
 
   buildSeries(){
     let result = []
     result.push({
       type: 'candlestick',
-      name: this.state.title,
-      data: this.state.data,
+      name: this.props.candleKey,
+      data: this.props.candleData,
       dataGrouping: {
         units: [
             [
@@ -43,16 +37,16 @@ export const CandleChart = React.createClass({
                 [1] // allowed multiples
             ], [
                 'month',
-                [1, 2, 3, 4, 6]
+                [1, 3]
             ]
         ]
       }
     })
-    this.props.indicators.forEach(({name, params})=>{
+    Object.keys(this.props.indicatorsData).forEach(k=>{
       result.push({
         type: 'line',
-        name: name+JSON.stringify(params),
-        data: INDICATOR[name](...params)(this.state.data)
+        name: k,
+        data: this.props.indicatorsData[k]
       })
     })
     return result
@@ -64,7 +58,7 @@ export const CandleChart = React.createClass({
             selected: 1
         },
         title: {
-            text: this.state.title
+            text: this.props.candleKey
         },
         series: this.buildSeries()
     }
