@@ -56,7 +56,7 @@ export const IndicatorPanel = React.createClass({
     return (<div className='fancy-indicator-container' key={indicator.name+JSON.stringify(indicator.params)}>
         <FancySelect label='Name' value={toSelectObj(indicator.name)} readonly={true} valueKey='name' values={indicators}/>
         <FancyInput label='Params' value={JSON.stringify(indicator.params)} readonly={true} valueKey='params'/>
-        <i className='fa fa-times icon' onClick={()=>this.onClickRemove(indicator)}></i>
+        <i className='fa fa-times icon icon-adjust' onClick={()=>this.onClickRemove(indicator)}></i>
       </div>)
   },
 

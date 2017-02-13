@@ -35,7 +35,7 @@ export const App = React.createClass({
   },
 
   render(){
-    return (<div>
+    return (<div style={{display: 'flex', position: 'relative'}}>
       <Foldable label={'Indicators'} >
         <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
       </Foldable>

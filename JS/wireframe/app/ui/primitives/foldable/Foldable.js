@@ -32,15 +32,15 @@ export const Foldable = React.createClass({
 
   getIconClass(){
     if(this.props.floatTo==='left' || this.props.floatTo==='right'){
-      let res = 'fa angle-left'
+      let res = 'fa icon fa-angle-left'
       if(this.state.folded === (this.props.floatTo==='left')){
-        res = 'fa angle-right'
+        res = 'fa icon fa-angle-right'
       }
       return res
     } else {
-      let res = 'fa angle-down'
+      let res = 'fa icon fa-angle-down'
       if(this.state.folded === (this.props.floatTo==='down')){
-        res = 'fa angle-up'
+        res = 'fa icon fa-angle-up'
       }
       return res
     }
@@ -48,14 +48,14 @@ export const Foldable = React.createClass({
 
   render(){
     let foldClass = ' ' + this.state.folded ? '' : 'unfold'
-    return (<div className='foldable'>
-      <div className={'foldable-' + this.props.floatTo + foldClass}>
-        {this.props.children}
-        <div className='handle'>
-          <i className={this.getIconClass()} onClick={()=>this.toggleFold()}/>
-          <span></span>
+    return (<div className={'foldable foldable-' + this.props.floatTo + foldClass}>
+        <div className='content'>
+          {this.props.children}
+          <div className='handle'>
+            <i className={this.getIconClass()} onClick={()=>this.toggleFold()}/>
+            <span className='vertical'>{this.props.label}</span>
+          </div>
         </div>
-      </div>
     </div>)
   }
 })

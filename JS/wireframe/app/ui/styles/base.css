@@ -4,6 +4,12 @@
   cursor: pointer;
 }
 
+.icon.icon-adjust{
+  padding-right: 5px;
+  position: relative;
+  bottom: -10px;
+}
+
 .icon:hover{
   color: orange;
 }
