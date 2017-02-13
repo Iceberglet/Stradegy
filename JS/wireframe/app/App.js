@@ -4,7 +4,7 @@ import 'app/ui/styles/base.css'
 import { TopChart, IndicatorPanel } from 'app/ui/components'
 
 export const App = React.createClass({
-  getInitialState(){
+  getDefaultProps(){
     return {
       indicators: [
         // {name: 'Floor', params: [100]},
@@ -17,17 +17,25 @@ export const App = React.createClass({
     }
   },
 
-  onChangeIndicator(list){
-    console.log(list)
-    this.setState({
-      indicators: list
-    })
+  // onChangeIndicator(list){
+  //   console.log(list)
+  //   this.setState({
+  //     indicators: list
+  //   })
+  // },
+
+  onAddIndicator(indicator){
+    this.tc && this.tc.addIndicator(indicator)
+  },
+
+  onRemoveIndicator(indicator){
+    this.tc && this.tc.removeIndicator(indicator)
   },
 
   render(){
     return (<div>
-      <TopChart dataKey='GBPUSD' indicatorConfig={this.state.indicators}/>
-      <IndicatorPanel indicatorList={this.state.indicators} onChange={this.onChangeIndicator}/>
+      <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
+      <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
     </div>)
   }
 })

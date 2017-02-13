@@ -8,7 +8,8 @@ const indicators = Object.keys(INDICATOR).map(toSelectObj)
 export const IndicatorPanel = React.createClass({
   propTypes: {
     indicatorList: React.PropTypes.array,
-    onChange: React.PropTypes.func
+    onAdd: React.PropTypes.func.isRequired,
+    onRemove: React.PropTypes.func.isRequired,
   },
 
   getDefaultProps(){
@@ -28,15 +29,11 @@ export const IndicatorPanel = React.createClass({
     }
   },
 
-  onChange(){
-    this.props.onChange && this.props.onChange(this.state.indicatorList)
-  },
-
   onClickRemove(indicator){
     this.setState((state)=>{
       state.indicatorList.splice(state.indicatorList.findIndex(i=>i===indicator), 1)
       return state
-    }, this.onChange)
+    }, ()=>this.props.onRemove(indicator))
   },
 
   onChangeNewConfig(obj){
@@ -46,13 +43,12 @@ export const IndicatorPanel = React.createClass({
   },
 
   onClickAdd(){
+    let newItem = {name: this.state.newItem.name.key, params: JSON.parse(this.state.newItem.params)}
     this.setState((s)=>{
-      s.newItem.params = JSON.parse(s.newItem.params)
-      s.newItem.name = s.newItem.name.key
-      s.indicatorList.push(s.newItem)
+      s.indicatorList.push(newItem)
       s.newItem = {}
       return s
-    }, this.onChange)
+    }, ()=>this.props.onAdd(newItem))
   },
 
   //{name: params: }

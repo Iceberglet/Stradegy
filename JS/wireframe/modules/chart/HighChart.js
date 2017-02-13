@@ -22,8 +22,8 @@ export const HighChart=React.createClass({
     // if(this.chart && this.chart.update){
     //   this.chart.update(nextProps.options);
     // }
-    let {options, chartType} = {...nextProps}
-    this.reconstructChart(options, chartType)
+    // let {options, chartType} = {...nextProps}
+    // this.reconstructChart(options, chartType)
   },
   shouldComponentUpdate(){
     return false;

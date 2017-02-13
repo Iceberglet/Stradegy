@@ -11,3 +11,5 @@ export const ATR = function(n){return function(data){let atr=[];data.forEach((d,
 
 //Average only takes in close value, i.e. l[4]
 export const EMA = function(n){return function(data){let ema=[[data[n-1][0],data.slice(0,n).map(l=>l[4]).reduce((p,c)=>p+c,0)/n]];data.forEach((d,idx)=>{if(idx>=n){ema.push([d[0],(ema[idx-n][1]*(n-1)+d[4])/n])}});return ema}}
+
+export const getName = function(obj){return obj.name+JSON.stringify(obj.params)}

@@ -9,8 +9,8 @@ export const CandleChart = React.createClass({
     // indicators: React.PropTypes.array,
     candleKey: React.PropTypes.string.isRequired,
     candleData: React.PropTypes.array.isRequired,
-    indicatorsData: React.PropTypes.object,   //key is indicator name
-    strategyData: React.PropTypes.array
+    // indicatorsData: React.PropTypes.object,   //key is indicator name
+    // strategyData: React.PropTypes.array
   },
 
   // getInitialState(){
@@ -23,6 +23,25 @@ export const CandleChart = React.createClass({
   // componentWillReceiveProps(props){
   //   this.setState(this.getStateFromProps(props))
   // },
+
+  //For Indicators and Trade Data ONLY
+  addOrUpdateSeries(options){
+    let chart = this.chartWrapper.getHighChart()
+    let series = chart.series.find(s=>s.name===options.name)
+    if(!series){
+      chart.addSeries(options)
+    } else {
+      series.update(options)
+    }
+  },
+
+  removeSeries(name){
+    let chart = this.chartWrapper.getHighChart()
+    let series = chart.series.find(s=>s.name===options.name)
+    if(series){
+      series.remove()
+    }
+  },
 
   buildSeries(){
     let result = []
@@ -38,14 +57,14 @@ export const CandleChart = React.createClass({
         ]
       }
     })
-    Object.keys(this.props.indicatorsData).forEach(k=>{
-      result.push({
-        type: 'line',
-        name: k,
-        lineWidth: 1,
-        data: this.props.indicatorsData[k]
-      })
-    })
+    // Object.keys(this.props.indicatorsData).forEach(k=>{
+    //   result.push({
+    //     type: 'line',
+    //     name: k,
+    //     lineWidth: 1,
+    //     data: this.props.indicatorsData[k]
+    //   })
+    // })
     return result
   },
 
