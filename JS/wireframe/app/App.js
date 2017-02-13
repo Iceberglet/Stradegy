@@ -1,7 +1,9 @@
 import React from 'react'
 import 'app/ui/styles/fancyForm/index.css'
 import 'app/ui/styles/base.css'
+import 'app/ui/styles/foldable.css'
 import { TopChart, IndicatorPanel } from 'app/ui/components'
+import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 
 export const App = React.createClass({
   getDefaultProps(){
@@ -34,8 +36,10 @@ export const App = React.createClass({
 
   render(){
     return (<div>
+      <Foldable label={'Indicators'} >
+        <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
+      </Foldable>
       <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
-      <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
     </div>)
   }
 })

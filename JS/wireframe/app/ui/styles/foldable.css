@@ -1,0 +1,84 @@
+/**** STRUCTURE
+    .foldable-(.top/.left/.right/.bottom)
+      .body
+        .content
+        .handle
+      ./body
+    ./foldable
+*/
+
+
+/* Body Space */
+.foldable .foldable-left,.foldable .foldable-right{
+  width: 80px;
+  height: 100%;
+  position: relative;
+}
+
+.foldable .foldable-top,.foldable .foldable-bottom{
+  height: 80px;
+  width: 100%;
+  position: relative;
+}
+
+/* Fold Handle CSS*/
+.foldable .foldable-left .handle,.foldable .foldable-right .handle{
+  width: 80px;
+  height: 100%;
+  flex-direction: column;
+}
+
+.foldable .foldable-top .handle,.foldable .foldable-bottom .handle{
+  height: 80px;
+  width: 100%;
+}
+
+.foldable .foldable-left .handle .vertical,.foldable .foldable-right .handle .vertical{
+    writing-mode:tb-rl;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform:rotate(90deg);
+    transform: rotate(90deg);
+    white-space:nowrap;
+    display:block;
+    bottom:0;
+    width:20px;
+    height:20px;
+}
+
+/*Position the handle to next to the body*/
+.foldable .foldable-top .handle{
+  top: 100%;
+}
+.foldable .foldable-left .handle{
+  left: 100%;
+}
+.foldable .foldable-bottom .handle{
+  bottom: 100%;
+}
+.foldable .foldable-right .handle{
+  right: 100%;
+}
+
+
+
+/**/
+.foldable .handle{
+  position: absolute;
+  display: flex;
+  transition: 0.3s;
+}
+
+.foldable-left.unfold{
+  transform: translate(100%, 0px);
+}
+.foldable-right.unfold{
+  transform: translate(-100%, 0px);
+}
+.foldable-top.unfold{
+  transform: translate(0px, 100%);
+}
+.foldable-bottom.unfold{
+  transform: translate(0px, -100%);
+}
