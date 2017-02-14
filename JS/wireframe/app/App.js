@@ -14,7 +14,7 @@ export const App = React.createClass({
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
         {name: 'EMA', params: [20]},
-        {name: 'EMA', params: [40]}
+        {name: 'EMA', params: [50]}
         // {name: 'EMA', params: [80]},
         // {name: 'EMA', params: [160]}
       ]
@@ -51,12 +51,11 @@ export const App = React.createClass({
   test(){
     let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
     console.log(strategyExecutor)
-    let strategy = {
-      open: 'EMA[20][idx] > EMA[50][idx] && EMA[]',
-      openAmount: '1',
-      close: ''
+    let longOnlyStrategy = {
+      open: 'IND["EMA[50]"][idx-1] > IND["EMA[20]"][idx-1] && IND["EMA[50]"][idx] < IND["EMA[20]"][idx] && 1',
+      close: 'IND["EMA[50]"][idx] > IND["EMA[20]"][idx]'
     }
-    strategyExecutor.run()
+    strategyExecutor.run(longOnlyStrategy)
   },
 
   render(){

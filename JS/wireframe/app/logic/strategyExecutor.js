@@ -14,31 +14,29 @@ const tryAndLog = (f)=>{
 export const StrategyExecutor = function(data, indicatorDataObj){
   this.data = deepClone(data);
   this.indicatorDataObj = deepClone(indicatorDataObj);
-  let allReady = false;
-  while(!allReady){
-    let startingTime = this.data[0][0]
-    //check indicator's first timeStamp
-    if(Object.values(this.indicatorDataObj).every(d=>d[0][0]===startingTime)){
-      allReady = true
-    } else {
+
+  Object.values(this.indicatorDataObj).forEach(ind=>{
+    while(this.data[0][0] < ind[0][0]){
       this.data.shift()
-      Object.values(this.indicatorDataObj).forEach(d=>{
-        while(d[0][0] < startingTime){
-          d.shift()
-        }
-      })
     }
-  }
+  })
+  Object.values(this.indicatorDataObj).forEach(ind=>{
+    while(this.data[0][0] > ind[0][0]){
+      ind.shift()
+    }
+  })
   console.log(this.data.length, ...Object.values(this.indicatorDataObj).map(d=>d.length))
   //Now all data and indicators have same length and starting point!
 }
 
-StrategyExecutor.prototype.run = function(strategies, configs, callBack){
-  let {open, openAmount, close} = {...strategies}
+StrategyExecutor.prototype.run = function(strategies, callBack, configs){
+  let {open, close} = {...strategies}
   /********************** Define API ****************************/
   //Define Indicators
+  let IND = {}
   Object.keys(this.indicatorDataObj).forEach((indicatorName)=>{
-    eval('let ' + indicatorName + ' = ' + this.indicatorDataObj[indicatorName])
+    // eval('let ' + indicatorName + ' = ' + this.indicatorDataObj[indicatorName])
+    IND[indicatorName] = this.indicatorDataObj[indicatorName]
   })
   //Define 'current' portfolio or buySellStatus
   let currentPosition = false // + 1 or - 1?
@@ -49,13 +47,11 @@ StrategyExecutor.prototype.run = function(strategies, configs, callBack){
   this.data.forEach((dayData, idx)=>{
     if(!currentPosition){
       tryAndLog(function(){
-        let shouldOpen = eval(open)
-        if(shouldOpen){
-          tryAndLog(function(){
-            positionEnterTime = dayData[0]
-            positionEnterPrice = dayData[4]
-            currentPosition = eval(openAmount)
-          })
+        let shouldOpenAmount = eval(open)
+        if(shouldOpenAmount){
+          positionEnterTime = dayData[0]
+          positionEnterPrice = dayData[4]
+          currentPosition = shouldOpenAmount
         }
       })
     }
@@ -64,13 +60,14 @@ StrategyExecutor.prototype.run = function(strategies, configs, callBack){
         let shouldClose = eval(close)
         if(shouldClose){
           let pnl = currentPosition * (dayData[4] - positionEnterPrice)
-          callBack({
+          let obj = {
             time1: positionEnterTime,
             price1: positionEnterPrice,
             time2: dayData[0],
             price2: dayData[4],
             pnl
-          })
+          }
+          callBack? callBack(obj) : console.log(obj)
           currentPosition = false // + 1 or - 1?
           positionEnterTime = false
           positionEnterPrice = false
