@@ -8,7 +8,7 @@ export const CandleChart = React.createClass({
     // dataKey: React.PropTypes.string.isRequired,
     // indicators: React.PropTypes.array,
     candleKey: React.PropTypes.string.isRequired,
-    candleData: React.PropTypes.array.isRequired,
+    candleData: React.PropTypes.array.isRequired
     // indicatorsData: React.PropTypes.object,   //key is indicator name
     // strategyData: React.PropTypes.array
   },
@@ -37,7 +37,7 @@ export const CandleChart = React.createClass({
 
   removeSeries(name){
     let chart = this.chartWrapper.getHighChart()
-    let series = chart.series.find(s=>s.name===options.name)
+    let series = chart.series.find(s=>s.name===name)
     if(series){
       series.remove()
     }

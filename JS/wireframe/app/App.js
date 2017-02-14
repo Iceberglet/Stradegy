@@ -35,11 +35,13 @@ export const App = React.createClass({
   },
 
   render(){
-    return (<div style={{display: 'flex', position: 'relative'}}>
+    return (<div style={{display: 'flex', position: 'relative', overflow: 'hidden'}}>
       <Foldable label={'Indicators'} >
         <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
       </Foldable>
-      <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
+      <div style={{flex: 1}}>
+        <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
+      </div>
     </div>)
   }
 })

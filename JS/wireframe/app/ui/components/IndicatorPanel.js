@@ -67,7 +67,7 @@ export const IndicatorPanel = React.createClass({
         {<div className='fancy-indicator-container' key='newItem'>
             <FancySelect label='Name' value={newItem && newItem.name} onConfirmChange={this.onChangeNewConfig} valueKey='name' values={indicators}/>
             <FancyInput label='Params' value={newItem && newItem.params} onConfirmChange={this.onChangeNewConfig} valueKey='params'/>
-            <i className='fa fa-plus icon' onClick={this.onClickAdd}></i>
+            <i className='fa fa-plus icon icon-adjust' onClick={this.onClickAdd}></i>
           </div>}
       </div>)
   }

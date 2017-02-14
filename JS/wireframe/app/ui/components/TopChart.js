@@ -36,6 +36,10 @@ export const TopChart = React.createClass({
     this.candleChart && this.candleChart.removeSeries(INDICATOR.getName(indicator))
   },
 
+  componentDidMount(){
+    this.props.indicatorConfig && this.props.indicatorConfig.forEach(this.addIndicator)
+  },
+
   getIndicatorOption(indicator){
     return {
       type: 'line',

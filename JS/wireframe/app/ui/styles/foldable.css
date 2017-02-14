@@ -8,55 +8,69 @@
 */
 
 /* Body Space */
-.foldable.foldable-left,.foldable.foldable-right{
-  min-width: 80px;
-  min-height: 100%;
+.foldable{
+  width: 60px;
+  z-index: 9999;
+  /*height: 100%;*/
   position: relative;
-  border: 1px solid black
+  border: 1px solid black;
 }
 
-/* Folder Content CSS */
-.foldable-left .content{
-  /*position: absolute;*/
-  max-width: 100%;
-  left: -100%;
+/* Folder Content Wrapper */
+.foldable .foldable-left{
+  position: absolute;
+  transform: translate(-100%, 0px); /*OffSet*/
+  top: 0px;
+  left: 0px;
+  height: 100%;
+}
+
+/*Folder Content Div*/
+.foldable .foldable-left .content{
+  position: relative;
+  transform: translate(0px, 0px);
+  transition: 0.3s;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: white;
 }
 
 /* Fold Handle CSS*/
-.foldable.foldable-left.handle,.foldable.foldable-right .handle{
-  width: 80px;
-  height: 100%;
-  flex-direction: column;
-}
+.foldable .foldable-left .content .handle{
+  width: 60px;
+  align-items: center;
 
-.foldable.foldable-left .handle .vertical,.foldable.foldable-right .handle .vertical{
-    writing-mode:tb-rl;
-    padding: 4px;
-    transform: rotate(90deg);
-    white-space:nowrap;
-    display:block;
-    bottom:0;
-}
-
-/*Position the handle to next to the body*/
-.foldable.foldable-left .handle{
+  /*Position the handle to next to the body*/
   top: 0px;
   right: 0px;
-  height: 100px;
+  height: 100%;
   flex-direction: column;
-  transform: translate(-100%, 0px);
+  transform: translate(100%, 0px);
 }
+
+.foldable .foldable-left .content .handle .vertical{
+    writing-mode:tb-rl;
+    font-size: 30px;
+    padding-top: 20px;
+}
+
 
 
 /**/
 .foldable .handle{
-  z-index: 9999;
   position: absolute;
   display: flex;
-  transition: 0.3s;
   background: coral;
 }
 
-.foldable-left.unfold{
+.foldable-left.unfold .content{
   transform: translate(100%, 0px);
+}
+
+.foldable .handle .fold-icon{
+  cursor: pointer;
+  font-size: 50px;
+  padding-top: 10px;
 }
