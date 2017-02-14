@@ -1,6 +1,6 @@
 import React from 'react'
 import * as DATA from 'app/data'
-import * as INDICATOR from 'app/logic/indicators'
+import {Indicators, IndicatorAPI} from 'app/logic/indicators'
 import { CandleChart } from 'app/ui/components'
 
 export const TopChart = React.createClass({
@@ -17,23 +17,12 @@ export const TopChart = React.createClass({
     }
   },
 
-  // getIndicatorData(){
-  //   let result = {}, c = this.props.indicatorConfig
-  //   if(!c || c.length === 0){
-  //     return result
-  //   }
-  //   c.forEach(i=>{
-  //     result[INDICATOR.getName(i)] = INDICATOR[name](...params)(DATA[this.props.dataKey])
-  //   })
-  //   return result
-  // },
-
   addIndicator(indicator){
     this.candleChart && this.candleChart.addOrUpdateSeries(this.getIndicatorOption(indicator))
   },
 
   removeIndicator(indicator){
-    this.candleChart && this.candleChart.removeSeries(INDICATOR.getName(indicator))
+    this.candleChart && this.candleChart.removeSeries(IndicatorAPI.getName(indicator))
   },
 
   componentDidMount(){
@@ -43,9 +32,9 @@ export const TopChart = React.createClass({
   getIndicatorOption(indicator){
     return {
       type: 'line',
-      name: INDICATOR.getName(indicator),
+      name: IndicatorAPI.getName(indicator),
       lineWidth: 1,
-      data: INDICATOR[indicator.name](...indicator.params)(DATA[this.props.dataKey])
+      data: Indicators[indicator.name](...indicator.params)(DATA[this.props.dataKey])
     }
   },
 

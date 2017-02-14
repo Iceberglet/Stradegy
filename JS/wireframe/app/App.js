@@ -2,6 +2,7 @@ import React from 'react'
 import 'app/ui/styles/fancyForm/index.css'
 import 'app/ui/styles/base.css'
 import 'app/ui/styles/foldable.css'
+import 'app/logic/utility.js'
 import { TopChart, IndicatorPanel } from 'app/ui/components'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 

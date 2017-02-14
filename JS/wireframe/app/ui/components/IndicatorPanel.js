@@ -1,9 +1,9 @@
 import React from 'react'
 import {FancyInput, FancySelect} from 'app/ui/primitives/fancyForm'
 
-import * as INDICATOR from 'app/logic/indicators'
+import { Indicators, IndicatorAPI } from 'app/logic/indicators'
 const toSelectObj = (i)=>{return{key: i, label: i}}
-const indicators = Object.keys(INDICATOR).map(toSelectObj)
+const indicators = Object.keys(Indicators).map(toSelectObj)
 
 export const IndicatorPanel = React.createClass({
   propTypes: {
@@ -44,6 +44,10 @@ export const IndicatorPanel = React.createClass({
 
   onClickAdd(){
     let newItem = {name: this.state.newItem.name.key, params: JSON.parse(this.state.newItem.params)}
+    if(this.state.indicatorList.find(i=>IndicatorAPI.equals(i, newItem))){
+      console.warn('Adding a duplicate indicator! Ignored!', newItem)
+      return
+    }
     this.setState((s)=>{
       s.indicatorList.push(newItem)
       s.newItem = {}
