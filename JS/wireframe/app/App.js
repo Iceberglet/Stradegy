@@ -13,8 +13,8 @@ export const App = React.createClass({
       indicators: [
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
-        {name: 'EMA', params: [20]}
-        // {name: 'EMA', params: [40]},
+        {name: 'EMA', params: [20]},
+        {name: 'EMA', params: [40]}
         // {name: 'EMA', params: [80]},
         // {name: 'EMA', params: [160]}
       ]
@@ -51,6 +51,12 @@ export const App = React.createClass({
   test(){
     let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
     console.log(strategyExecutor)
+    let strategy = {
+      open: 'EMA[20][idx] > EMA[50][idx] && EMA[]',
+      openAmount: '1',
+      close: ''
+    }
+    strategyExecutor.run()
   },
 
   render(){
@@ -60,7 +66,7 @@ export const App = React.createClass({
         <Foldable label={'Indicators'} >
           <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
         </Foldable>
-        <div style={{flex: 1, height: '600px'}}>
+        <div style={{flex: 1, height: '500px'}}>
           <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
         </div>
       </div>
