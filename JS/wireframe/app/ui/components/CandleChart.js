@@ -47,6 +47,7 @@ export const CandleChart = React.createClass({
     let result = []
     result.push({
       type: 'candlestick',
+      metaType: 'data',
       name: this.props.candleKey,
       data: this.props.candleData,
       dataGrouping: {
@@ -57,14 +58,6 @@ export const CandleChart = React.createClass({
         ]
       }
     })
-    // Object.keys(this.props.indicatorsData).forEach(k=>{
-    //   result.push({
-    //     type: 'line',
-    //     name: k,
-    //     lineWidth: 1,
-    //     data: this.props.indicatorsData[k]
-    //   })
-    // })
     return result
   },
 
@@ -81,11 +74,6 @@ export const CandleChart = React.createClass({
         },
         series: this.buildSeries()
     }
-    // if(this.chartWrapper){
-    //   let chart = this.chartWrapper.getHighChart()
-    //   chart.options = options
-    //   chart.redraw()
-    // }
     return <HighChart ref={c=>{this.chartWrapper=c}} chartType='stockChart' options={options}/>
   }
 })

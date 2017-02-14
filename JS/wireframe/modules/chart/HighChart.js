@@ -15,7 +15,8 @@ export const HighChart=React.createClass({
   },
   getDefaultProps(){
     return {
-      chartType: 'chart'
+      chartType: 'chart',
+      className: 'fill'
     }
   },
   componentWillReceiveProps(nextProps){

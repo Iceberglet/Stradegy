@@ -13,3 +13,8 @@
 .icon:hover{
   color: orange;
 }
+
+.fill{
+  width: 100%;
+  height: 100%;
+}
