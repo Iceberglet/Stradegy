@@ -13,8 +13,8 @@ export const App = React.createClass({
       indicators: [
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
-        {name: 'EMA', params: [20]},
-        {name: 'EMA', params: [50]}
+        {name: 'EMA', params: [15]},
+        {name: 'EMA', params: [60]}
         // {name: 'EMA', params: [80]},
         // {name: 'EMA', params: [160]}
       ]
@@ -52,10 +52,23 @@ export const App = React.createClass({
     let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
     console.log(strategyExecutor)
     let longOnlyStrategy = {
-      open: 'IND["EMA[50]"][idx-1] > IND["EMA[20]"][idx-1] && IND["EMA[50]"][idx] < IND["EMA[20]"][idx] && 1',
-      close: 'IND["EMA[50]"][idx] > IND["EMA[20]"][idx]'
+      open: 'IND["EMA[60]"][idx-1] > IND["EMA[15]"][idx-1] && IND["EMA[60]"][idx] < IND["EMA[15]"][idx] && 1',
+      close: 'IND["EMA[60]"][idx] > IND["EMA[15]"][idx]'
     }
-    strategyExecutor.run(longOnlyStrategy)
+
+    let openLong = [], openShort = [], close = []
+    let cb = (result)=>{
+      close.push([result.time2, result.price2])
+      if(result.position > 0){//is long
+        openLong.push([result.time1, result.price1])
+      } else {
+        openShort.push([result.time1, result.price1])
+      }
+    }
+    strategyExecutor.run(longOnlyStrategy, cb)
+    this.tc.addOpenLongSeries(openLong)
+    this.tc.addOpenShortSeries(openShort)
+    this.tc.addCloseSeries(close)
   },
 
   render(){
@@ -65,7 +78,7 @@ export const App = React.createClass({
         <Foldable label={'Indicators'} >
           <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
         </Foldable>
-        <div style={{flex: 1, height: '500px'}}>
+        <div style={{flex: 1, height: '700px'}}>
           <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
         </div>
       </div>

@@ -14,10 +14,12 @@ const tryAndLog = (f)=>{
 export const StrategyExecutor = function(data, indicatorDataObj){
   this.data = deepClone(data);
   this.indicatorDataObj = deepClone(indicatorDataObj);
+  this.dataOffSet = 0;
 
   Object.values(this.indicatorDataObj).forEach(ind=>{
     while(this.data[0][0] < ind[0][0]){
       this.data.shift()
+      this.dataOffSet = this.dataOffSet + 1
     }
   })
   Object.values(this.indicatorDataObj).forEach(ind=>{
@@ -42,6 +44,7 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
   let currentPosition = false // + 1 or - 1?
   let positionEnterTime = false
   let positionEnterPrice = false
+  let openDataIdx = false
 
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{
@@ -52,6 +55,7 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
           positionEnterTime = dayData[0]
           positionEnterPrice = dayData[4]
           currentPosition = shouldOpenAmount
+          openDataIdx = idx + this.dataOffSet
         }
       })
     }
@@ -61,6 +65,9 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
         if(shouldClose){
           let pnl = currentPosition * (dayData[4] - positionEnterPrice)
           let obj = {
+            openDataIdx,
+            closeDataIdx: idx + this.dataOffSet,
+            position: currentPosition,
             time1: positionEnterTime,
             price1: positionEnterPrice,
             time2: dayData[0],
@@ -71,6 +78,7 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
           currentPosition = false // + 1 or - 1?
           positionEnterTime = false
           positionEnterPrice = false
+          openDataIdx = false
         }
       })
     }

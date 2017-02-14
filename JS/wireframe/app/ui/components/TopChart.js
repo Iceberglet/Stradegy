@@ -27,6 +27,48 @@ export const TopChart = React.createClass({
     })
   },
 
+  //add or update
+  addOpenLongSeries(data){
+    this.candleChart && this.candleChart.addOrUpdateSeries({
+      type: 'scatter',
+      metaType: 'openLong',
+      color: 'white',
+      marker: {
+          symbol: 'triangle'
+      },
+      name: 'Open Long',
+      data
+    })
+  },
+
+  //add or update
+  addOpenShortSeries(data){
+    this.candleChart && this.candleChart.addOrUpdateSeries({
+      type: 'scatter',
+      metaType: 'openShort',
+      color: 'white',
+      marker: {
+          symbol: 'triangle-down'
+      },
+      name: 'Open Short',
+      data
+    })
+  },
+
+  //add or update
+  addCloseSeries(data){
+    this.candleChart && this.candleChart.addOrUpdateSeries({
+      type: 'scatter',
+      metaType: 'close',
+      color: 'white',
+      marker: {
+          symbol: 'circle'
+      },
+      name: 'Close',
+      data
+    })
+  },
+
   removeIndicator(indicator){
     this.candleChart && this.candleChart.removeSeries(IndicatorAPI.getName(indicator))
   },
