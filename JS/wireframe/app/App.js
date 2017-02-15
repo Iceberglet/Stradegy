@@ -78,7 +78,7 @@ export const App = React.createClass({
         <Foldable label={'Indicators'} >
           <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
         </Foldable>
-        <div style={{flex: 1, height: '100px'}}>
+        <div style={{flex: 1, height: '500px'}}>
           <TopChart ref={tc=>{this.tc=tc}} dataKey='USDJPY' indicatorConfig={this.props.indicators}/>
         </div>
       </div>
