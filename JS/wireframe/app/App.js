@@ -3,7 +3,7 @@ import 'app/ui/styles/fancyForm/index.css'
 import 'app/ui/styles/base.css'
 import 'app/ui/styles/foldable.css'
 import 'app/logic/utility.js'
-import { TopChart, IndicatorPanel } from 'app/ui/components'
+import { TopChart, IndicatorPanel, StrategyPanel } from 'app/ui/components'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 import { StrategyExecutor } from 'app/logic/StrategyExecutor'
 
@@ -81,6 +81,8 @@ export const App = React.createClass({
           <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
         </div>
       </div>
+
+      <StrategyPanel />
 
       <div>
         <button onClick={this.test} >Test</button>
