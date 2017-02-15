@@ -51,19 +51,21 @@ export const App = React.createClass({
   test(strategy){
     let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
     /*
-    let opened = portfolio.getOpenPositions()
-    if(opened.length === 0){
-        tryAndLog(function(){
-            let shouldOpenAmount = IND["EMA[60]"][idx-1][1] > IND["EMA[15]"][idx-1][1] && IND["EMA[60]"][idx][1] < IND["EMA[15]"][idx][1] && 1;
-            if(shouldOpenAmount){
-              portfolio.markOpenPosition(shouldOpenAmount, dayData);
-            }})}
-        else {tryAndLog(()=>{
-            let shouldClose = IND["EMA[60]"][idx][1] > IND["EMA[15]"][idx][1];
-                if(shouldClose){
-                    portfolio.markClosePosition(opened[0], dayData);
-        }})}
-        */
+    if(idx !== 0){
+      let opened = portfolio.getOpenPositions()
+      if(opened.length === 0){
+          tryAndLog(function(){
+              let shouldOpenAmount = IND["EMA[60]"][idx-1][1] > IND["EMA[15]"][idx-1][1] && IND["EMA[60]"][idx][1] < IND["EMA[15]"][idx][1] && 1;
+              if(shouldOpenAmount){
+                portfolio.markOpenPosition(shouldOpenAmount, dayData);
+              }})}
+          else {tryAndLog(()=>{
+              let shouldClose = IND["EMA[60]"][idx][1] > IND["EMA[15]"][idx][1];
+                  if(shouldClose){
+                      portfolio.markClosePosition(opened[0], dayData);
+          }})}
+    }
+    */
 
     let res = strategyExecutor.run(strategy)
     this.tc.addOpenLongSeries(res.openLong)
