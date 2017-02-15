@@ -32,8 +32,9 @@ export const TopChart = React.createClass({
     this.candleChart && this.candleChart.addOrUpdateSeries({
       type: 'scatter',
       metaType: 'openLong',
-      color: 'white',
+      color: 'orange',
       marker: {
+          radius: 7,
           symbol: 'triangle'
       },
       name: 'Open Long',
@@ -46,8 +47,9 @@ export const TopChart = React.createClass({
     this.candleChart && this.candleChart.addOrUpdateSeries({
       type: 'scatter',
       metaType: 'openShort',
-      color: 'white',
+      color: 'orange',
       marker: {
+          radius: 7,
           symbol: 'triangle-down'
       },
       name: 'Open Short',
@@ -60,8 +62,9 @@ export const TopChart = React.createClass({
     this.candleChart && this.candleChart.addOrUpdateSeries({
       type: 'scatter',
       metaType: 'close',
-      color: 'white',
+      color: 'blue',
       marker: {
+          radius: 7,
           symbol: 'circle'
       },
       name: 'Close',

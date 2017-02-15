@@ -66,7 +66,7 @@ export const IndicatorPanel = React.createClass({
 
   render(){
     let newItem = this.state.newItem
-    return (<div>
+    return (<div style={{overflow: 'scroll', height: '100%'}}>
         {this.state.indicatorList.map(this.renderItem)}
         {<div className='fancy-indicator-container' key='newItem'>
             <FancySelect label='Name' value={newItem && newItem.name} onConfirmChange={this.onChangeNewConfig} valueKey='name' values={indicatorNames}/>

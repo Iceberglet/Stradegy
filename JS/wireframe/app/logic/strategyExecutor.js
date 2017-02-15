@@ -30,8 +30,8 @@ export const StrategyExecutor = function(data, indicatorDataObj){
   //Now all data and indicators have same length and starting point!
 }
 
-StrategyExecutor.prototype.run = function(strategies, callBack, configs){
-  let {open, close} = {...strategies}
+//Callback object is used to emit result (time0-1, price0-1)
+StrategyExecutor.prototype.run = function(strategy, configs){
   /********************** Define API ****************************/
   //Define Indicators
   let IND = {}
@@ -44,54 +44,74 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
 
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{
-    if(!portfolio.currentPosition){
-      tryAndLog(function(){
-        let shouldOpenAmount = eval(open)
-        if(shouldOpenAmount){
-          portfolio.open(dayData, shouldOpenAmount)
-        }
-      })
-    }
-    else {
-      tryAndLog(()=>{
-        let shouldClose = eval(close)
-        if(shouldClose){
-          portfolio.close(dayData, idx)
-          callBack? callBack(portfolio.collect()) : console.log(portfolio.collect())
-          portfolio.initialize()
-        }
-      })
-    }
+    tryAndLog(()=>{
+      eval(strategy)
+    })
+    // if(!portfolio.currentPosition){
+    //   tryAndLog(function(){
+    //     let shouldOpenAmount = eval(open)
+    //     if(shouldOpenAmount){
+    //       portfolio.open(dayData, shouldOpenAmount)
+    //     }
+    //   })
+    // }
+    // else {
+    //   tryAndLog(()=>{
+    //     let shouldClose = eval(close)
+    //     if(shouldClose){
+    //       portfolio.close(dayData, idx)
+    //       callBack? callBack(portfolio.collect()) : console.log(portfolio.collect())
+    //       portfolio.initialize()
+    //     }
+    //   })
+    // }
   })
+
+  return portfolio.collect()
+}
+
+
+const PortfolioAction = function(){
+}
+PortfolioAction.prototype.collect = function(){
+  return Object.assign({}, this)
 }
 
 const PortfolioStatus = function(){
-}
-
-PortfolioStatus.prototype.initialize = function(dataOffSet){
-  this.currentPosition = false // + 1 or - 1?
-  this.time0 = false
-  this.price0 = false
-  this.time1 = false
-  this.price1 = false
-  this.openDataIdx = false
-  this.dataOffSet = dataOffSet;
-}
-
-PortfolioStatus.prototype.open = function(dayData, notional, idx){
-  this.time0 = dayData[0]
-  this.price0 = dayData[4]  //close price only
-  this.currentPosition = notional
-  this.openDataIdx = idx + this.dataOffSet
-}
-
-PortfolioStatus.prototype.close = function(dayData, notional, idx){
-  this.pnl = this.currentPosition * (dayData[4] - this.price0)
-  this.closeDataIdx = idx + this.dataOffSet
-  this.time1 = dayData[0]
-  this.price1 = dayData[4]
-}
-
-PortfolioStatus.prototype.collect = function(){
-  return Object.assign({}, this)
+  let actionList = []
+  return {
+    markOpenPosition: function(notional, dayData){
+      let action = new PortfolioAction()
+      action.type = 'open'
+      action.status = 'opened'
+      action.time = dayData[0]
+      action.notional = notional
+      action.price = dayData[4]
+      actionList.push(action)
+      return action
+    },
+    markClosePosition: function(otherPortfolio, dayData){
+      let action = new PortfolioAction()
+      otherPortfolio.status = 'closed'
+      action.status = 'closed'
+      action.type = 'close'
+      action.time = dayData[0]
+      action.notional = -otherPortfolio.notional
+      action.price = dayData[4]
+      action.pnl = otherPortfolio.notional * (dayData[4] - otherPortfolio.price)
+      actionList.push(action)
+      return action
+    },
+    getOpenPositions: function(){
+      return actionList.filter(a =>a.status==='opened' && a.type==='open')
+    },
+    collect: function(){
+      let toScatterBean = (action)=>[action.time, action.price, action.notional]
+      return {
+        openLong: actionList.filter(a=>a.type==='open' && a.notional > 0).map(toScatterBean),
+        openShort: actionList.filter(a=>a.type==='open' && a.notional < 0).map(toScatterBean),
+        close: actionList.filter(a=>a.type==='close').map(toScatterBean)
+      }
+    }
+  }
 }

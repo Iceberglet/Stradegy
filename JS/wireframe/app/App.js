@@ -48,26 +48,27 @@ export const App = React.createClass({
       .toObject((s)=>s.name, (s)=>s.options.data)
   },
 
-  test(){
+  test(strategy){
     let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
-    let longOnlyStrategy = {
-      open: 'IND["EMA[60]"][idx-1] > IND["EMA[15]"][idx-1] && IND["EMA[60]"][idx] < IND["EMA[15]"][idx] && 1',
-      close: 'IND["EMA[60]"][idx] > IND["EMA[15]"][idx]'
-    }
+    /*
+    let opened = portfolio.getOpenPositions()
+    if(opened.length === 0){
+        tryAndLog(function(){
+            let shouldOpenAmount = IND["EMA[60]"][idx-1][1] > IND["EMA[15]"][idx-1][1] && IND["EMA[60]"][idx][1] < IND["EMA[15]"][idx][1] && 1;
+            if(shouldOpenAmount){
+              portfolio.markOpenPosition(shouldOpenAmount, dayData);
+            }})}
+        else {tryAndLog(()=>{
+            let shouldClose = IND["EMA[60]"][idx][1] > IND["EMA[15]"][idx][1];
+                if(shouldClose){
+                    portfolio.markClosePosition(opened[0], dayData);
+        }})}
+        */
 
-    let openLong = [], openShort = [], close = []
-    let cb = (result)=>{
-      close.push([result.time2, result.price2])
-      if(result.position > 0){//is long
-        openLong.push([result.time1, result.price1])
-      } else {
-        openShort.push([result.time1, result.price1])
-      }
-    }
-    strategyExecutor.run(longOnlyStrategy, cb)
-    this.tc.addOpenLongSeries(openLong)
-    this.tc.addOpenShortSeries(openShort)
-    this.tc.addCloseSeries(close)
+    let res = strategyExecutor.run(strategy)
+    this.tc.addOpenLongSeries(res.openLong)
+    this.tc.addOpenShortSeries(res.openShort)
+    this.tc.addCloseSeries(res.close)
   },
 
   render(){
@@ -77,16 +78,12 @@ export const App = React.createClass({
         <Foldable label={'Indicators'} >
           <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
         </Foldable>
-        <div style={{flex: 1, height: '700px'}}>
-          <TopChart ref={tc=>{this.tc=tc}} dataKey='GBPUSD' indicatorConfig={this.props.indicators}/>
+        <div style={{flex: 1, height: '100px'}}>
+          <TopChart ref={tc=>{this.tc=tc}} dataKey='USDJPY' indicatorConfig={this.props.indicators}/>
         </div>
       </div>
 
-      <StrategyPanel />
-
-      <div>
-        <button onClick={this.test} >Test</button>
-      </div>
+      <StrategyPanel onApply={this.test}/>
     </div>)
   }
 })
