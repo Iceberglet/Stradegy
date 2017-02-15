@@ -27,7 +27,6 @@ export const StrategyExecutor = function(data, indicatorDataObj){
       ind.shift()
     }
   })
-  console.log(this.data.length, ...Object.values(this.indicatorDataObj).map(d=>d.length))
   //Now all data and indicators have same length and starting point!
 }
 
@@ -41,21 +40,15 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
     IND[indicatorName] = this.indicatorDataObj[indicatorName]
   })
   //Define 'current' portfolio or buySellStatus
-  let currentPosition = false // + 1 or - 1?
-  let positionEnterTime = false
-  let positionEnterPrice = false
-  let openDataIdx = false
+  let portfolio = new PortfolioStatus()
 
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{
-    if(!currentPosition){
+    if(!portfolio.currentPosition){
       tryAndLog(function(){
         let shouldOpenAmount = eval(open)
         if(shouldOpenAmount){
-          positionEnterTime = dayData[0]
-          positionEnterPrice = dayData[4]
-          currentPosition = shouldOpenAmount
-          openDataIdx = idx + this.dataOffSet
+          portfolio.open(dayData, shouldOpenAmount)
         }
       })
     }
@@ -63,24 +56,42 @@ StrategyExecutor.prototype.run = function(strategies, callBack, configs){
       tryAndLog(()=>{
         let shouldClose = eval(close)
         if(shouldClose){
-          let pnl = currentPosition * (dayData[4] - positionEnterPrice)
-          let obj = {
-            openDataIdx,
-            closeDataIdx: idx + this.dataOffSet,
-            position: currentPosition,
-            time1: positionEnterTime,
-            price1: positionEnterPrice,
-            time2: dayData[0],
-            price2: dayData[4],
-            pnl
-          }
-          callBack? callBack(obj) : console.log(obj)
-          currentPosition = false // + 1 or - 1?
-          positionEnterTime = false
-          positionEnterPrice = false
-          openDataIdx = false
+          portfolio.close(dayData, idx)
+          callBack? callBack(portfolio.collect()) : console.log(portfolio.collect())
+          portfolio.initialize()
         }
       })
     }
   })
+}
+
+const PortfolioStatus = function(){
+}
+
+PortfolioStatus.prototype.initialize = function(dataOffSet){
+  this.currentPosition = false // + 1 or - 1?
+  this.time0 = false
+  this.price0 = false
+  this.time1 = false
+  this.price1 = false
+  this.openDataIdx = false
+  this.dataOffSet = dataOffSet;
+}
+
+PortfolioStatus.prototype.open = function(dayData, notional, idx){
+  this.time0 = dayData[0]
+  this.price0 = dayData[4]  //close price only
+  this.currentPosition = notional
+  this.openDataIdx = idx + this.dataOffSet
+}
+
+PortfolioStatus.prototype.close = function(dayData, notional, idx){
+  this.pnl = this.currentPosition * (dayData[4] - this.price0)
+  this.closeDataIdx = idx + this.dataOffSet
+  this.time1 = dayData[0]
+  this.price1 = dayData[4]
+}
+
+PortfolioStatus.prototype.collect = function(){
+  return Object.assign({}, this)
 }

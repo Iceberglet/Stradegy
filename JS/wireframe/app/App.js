@@ -50,7 +50,6 @@ export const App = React.createClass({
 
   test(){
     let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
-    console.log(strategyExecutor)
     let longOnlyStrategy = {
       open: 'IND["EMA[60]"][idx-1] > IND["EMA[15]"][idx-1] && IND["EMA[60]"][idx] < IND["EMA[15]"][idx] && 1',
       close: 'IND["EMA[60]"][idx] > IND["EMA[15]"][idx]'
