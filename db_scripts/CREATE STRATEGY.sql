@@ -1,0 +1,6 @@
+CREATE TABLE STRATEGY (
+	ID varchar(50) NOT NULL
+	,JAVASCRIPT varchar(max) NOT NULL  
+	,JAVASCRIPT_VAR varchar(max) NOT NULL
+    ,PRIMARY KEY (ID)
+)

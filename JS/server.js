@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require('path');
+var connection = require('./connection/mssql-connection');
 
 const removeParam = (s)=>{
   while(s.indexOf('?') > 0){
@@ -37,51 +38,11 @@ app.post('/', function (req, res) {
   console.log('POST Request For Home Page Received')
 });
 
+connection.saveStrategy('First', '55', '33')
+
+connection.saveStrategy('Second', '132123', '33')
+
+connection.updateStrategy('Second', '5745674', '33')
+
 
 app.listen(8001);
-
-// var http = require('http');
-// var fs = require('fs');
-// var path = require('path');
-//
-// fs.readFile('index.html', function (err, html) {
-//     if (err) {
-//         throw err;
-//     }
-//     http.createServer(function(req, res) {
-//       var filePath = req.url;
-//       if (filePath == '/')
-//         filePath = '/index.html';
-//
-//       filePath = __dirname+filePath;
-//       var extname = path.extname(filePath);
-//       var contentType = 'text/html';
-//
-//       switch (extname) {
-//           case '.js':
-//               contentType = 'text/javascript';
-//               break;
-//           case '.css':
-//               contentType = 'text/css';
-//               break;
-//           case '.woff2':
-//               contentType = 'font/woff2';
-//               break;
-//       }
-//
-//       fs.exists(filePath, function(exists) {
-//         if (exists) {
-//           fs.readFile(filePath, function(error, content) {
-//               if (error) {
-//                   res.writeHead(500);
-//                   res.end();
-//               }
-//               else {
-//                   res.writeHead(200, { 'Content-Type': contentType });
-//                   res.end(content, 'utf-8');
-//               }
-//           });
-//         }
-//       })
-//     }).listen(8001, '127.0.0.1');
-// });
