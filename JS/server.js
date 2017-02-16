@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var connection = require('./connection/mssql-connection');
+var bodyParser = require('body-parser');
 
 const removeParam = (s)=>{
   while(s.indexOf('?') > 0){
@@ -9,6 +10,9 @@ const removeParam = (s)=>{
   }
   return s
 }
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // viewed at http://localhost:8080
 app.get('/wireframe/*', function(req, res) {
@@ -33,16 +37,24 @@ app.put('/', function (req, res) {
   console.log('PUT Request For Home Page Received')
 });
 
-app.post('/', function (req, res) {
-  res.send('POST request to homepage');
-  console.log('POST Request For Home Page Received')
+app.post('/test', function(request, respond) {
+  console.log(request.body)
+  console.log(request.params)
+
+    // var body = '';
+    // filePath = __dirname + '/data/';
+    // request.on('data', function(data) {
+    //     body += data;
+    // });
 });
 
-connection.saveStrategy('First', '55', '33')
 
-connection.saveStrategy('Second', '132123', '33')
-
-connection.updateStrategy('Second', '5745674', '33')
+//
+// connection.saveStrategy('First', '55', '33')
+//
+// connection.saveStrategy('Second', '132123', '33')
+//
+// connection.updateStrategy('Second', '5745674', '33')
 
 
 app.listen(8001);

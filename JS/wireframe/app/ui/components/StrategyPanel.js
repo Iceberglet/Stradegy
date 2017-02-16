@@ -1,6 +1,7 @@
 import React from 'react'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 import CodeMirror from 'react-codemirror'
+import { Transact } from 'app/transaction'
 
 const strategyContainerStyle = {
   display: 'flex',
@@ -72,7 +73,7 @@ export const StrategyPanel = React.createClass({
   },
 
   onSave(){
-
+    Transact.test()
   },
 
   onApply(){
