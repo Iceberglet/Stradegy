@@ -1,5 +1,6 @@
 import React from 'react'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
+import CodeMirror from 'react-codemirror'
 
 const strategyContainerStyle = {
   display: 'flex',
@@ -36,11 +37,29 @@ const buttonStyle = {
   fontSize: '24px'
 }
 
+const codeMirrorOption = {
+  lineNumbers: 'true',
+  mode: 'javascript',
+  readOnly: false
+}
+
 export const StrategyPanel = React.createClass({
   propTypes: {
     onSave: React.PropTypes.func,
-    onApply: React.PropTypes.func
+    onApply: React.PropTypes.func,
+    code: React.PropTypes.string
   },
+
+  getInitialState(){
+    return {
+      code: this.props.code
+    }
+  },
+
+  componentWillReceiveProps(props){
+    this.onChangeCode(props.code)
+  },
+
   handleTab(e){
     if(e.keyCode === 9){
       let start = e.target.selectionStart, end = e.target.selectionEnd
@@ -57,7 +76,13 @@ export const StrategyPanel = React.createClass({
   },
 
   onApply(){
-    this.props.onApply && this.props.onApply(this.input.value)
+    this.props.onApply && this.props.onApply(this.state.code)
+  },
+
+  onChangeCode(newCode){
+    this.setState({
+      code: newCode
+    })
   },
 
   render(){
@@ -70,7 +95,11 @@ export const StrategyPanel = React.createClass({
           <button style={buttonStyle} onClick={this.onSave}>Save</button>
           <button style={buttonStyle} onClick={this.onApply}>Apply</button>
         </div>
-        <textarea ref={a=>{this.input = a}} style={textareaStyle} onKeyDown={this.handleTab}/>
+        <div style={textareaStyle} >
+          <CodeMirror value={this.state.code || ''} onChange={this.onChangeCode} options={codeMirrorOption} />
+        </div>
+        {/*<textarea ref={a=>{this.input = a}} style={textareaStyle} onKeyDown={this.handleTab}/>*/}
+
       </div>
     </div>)
   }
