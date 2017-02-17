@@ -73,7 +73,7 @@ export const StrategyPanel = React.createClass({
   },
 
   onSave(){
-    Transact.test()
+    Transact.loadStrategy(this.state.code)
   },
 
   onApply(){

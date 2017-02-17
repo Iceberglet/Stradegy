@@ -1,9 +1,9 @@
 export const Transact = {}
 
-Transact.test = ()=>{
+const portal = (action, content, cb)=>{
   var http = new XMLHttpRequest();
-  var url = 'test';
-  var params = 'action=loadStrategy&content=StrategyName'
+  var url = 'portal';
+  var params = 'action='+action+'&content='+content
 
   http.open('POST', url, true);
 
@@ -14,7 +14,16 @@ Transact.test = ()=>{
       if(http.readyState === 4 && http.status === 200) {
           alert(http.responseText, http.response);
           console.log(http.responseText, http.response);
+          cb(http.responseText)
       }
   }
   http.send(params);
+}
+
+Transact.loadStrategy = (name, cb)=>{
+  portal('loadStrategy', name, cb)
+}
+
+Transact.createOrUpdateStrategy = (name, strategy, cb)=>{
+  portal('createOrUpdateStrategy', name, cb)
 }

@@ -38,13 +38,14 @@ app.put('/', function (req, res) {
   console.log('PUT Request For Home Page Received')
 });
 
-app.post('/test', function(request, respond) {
+app.post('/portal', function(request, respond) {
   let action = request.body.action
 
   let content = request.body.content
   if(typeof(content)==='object'){
     content = JSON.parse(content)
   }
+  console.log(action)
   if(action && content && requestHandler[action]){
     let res = requestHandler[action](content)
     console.log(res)
