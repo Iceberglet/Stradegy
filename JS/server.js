@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var connection = require('./connection/mssql-connection');
+var requestHandler = require('./connection/httpHandler');
 var bodyParser = require('body-parser');
 
 const removeParam = (s)=>{
@@ -38,8 +39,19 @@ app.put('/', function (req, res) {
 });
 
 app.post('/test', function(request, respond) {
-  console.log(request.body)
-  console.log(request.params)
+  let action = request.body.action
+
+  let content = request.body.content
+  if(typeof(content)==='object'){
+    content = JSON.parse(content)
+  }
+  if(action && content && requestHandler[action]){
+    let res = requestHandler[action](content)
+    console.log(res)
+    respond.send(res)
+  } else {
+    respond.status(404).send('Illegal Request')
+  }
 
     // var body = '';
     // filePath = __dirname + '/data/';

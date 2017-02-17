@@ -41,6 +41,7 @@
     "webpack": "1.12.14"
   },
   "dependencies": {
+    "ajax-request": "^1.2.1",
     "highcharts": "4.2.5",
     "immutable": "3.7.6",
     "material-ui": "0.14.2",

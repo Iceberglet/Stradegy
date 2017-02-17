@@ -3,7 +3,7 @@ export const Transact = {}
 Transact.test = ()=>{
   var http = new XMLHttpRequest();
   var url = 'test';
-  var params = 'lorem=hilow&name={op: best}';
+  var params = 'action=loadStrategy&content=StrategyName'
 
   http.open('POST', url, true);
 
@@ -12,7 +12,8 @@ Transact.test = ()=>{
 
   http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState === 4 && http.status === 200) {
-          alert(http.responseText);
+          alert(http.responseText, http.response);
+          console.log(http.responseText, http.response);
       }
   }
   http.send(params);
