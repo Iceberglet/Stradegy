@@ -1,0 +1,77 @@
+{
+  "ecmaFeatures": {
+    "jsx": true,
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "generators": true,
+    "modules" : true
+  },
+  "parserOptions": {,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "arrowFunctions": true,
+            "blockBindings": true,
+            "generators": true,
+            "modules" : true,
+            "experimentalObjectRestSpread": true
+        }
+    },
+  "rules": {
+    "strict": 2,
+    "no-underscore-dangle": 0,
+    "no-unused-vars": 2,
+    "curly": 2,
+    "no-multi-spaces": 0,
+    "key-spacing": 2,
+    "no-return-assign": 2,
+    "consistent-return": 0,
+    "no-shadow": 2,
+    "no-use-before-define": 2,
+    "no-empty": 2,
+    "new-parens": 2,
+    "no-cond-assign": 2,
+    "quotes": [1,"single"],
+    "eqeqeq": 2,
+    "camelcase": 2,
+    "new-cap": [1, { "capIsNew": false }],
+    "no-undef": 2,
+    "no-console": 0
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true,
+    "mocha" : true,
+    "jasmine": true
+  },
+  "globals": {
+      Ext: false,
+      staticReferenceDataMap: false,
+      StreamingRatesFacade: false,
+      CommunicatorFacade: false,
+      OrderManagementFacade: false,
+      IRSServiceFacade: false,
+      SettingsFacade: false,
+      LoginFacade: false,
+      FiRfqFacade: false,
+      FxSalesWorkstationFacade: false,
+      MainPanelDAO: false,
+      ComponentFacade: false,
+      UtilityFacade: false,
+      RfqFacade: false,
+      FmConnectFixedIncomeFacade: false,
+      PreTradeAnalyticsFacade: false,
+      ChatFacade: false,
+      UnderlyingManagementFacade: false,
+      WorkstationFacade: false,
+      FmConnectMainFacade: false,
+      FeedSubscriptionRequest: false,
+      dwr: false,
+      chrome: false,
+      Handsontable: false,
+      FmConnectFxoFacade: false,
+      numeral: false
+    },
+  "extends": ["eslint:recommended"]
+}

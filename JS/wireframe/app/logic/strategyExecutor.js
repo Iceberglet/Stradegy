@@ -47,24 +47,6 @@ StrategyExecutor.prototype.run = function(strategy, configs){
     tryAndLog(()=>{
       eval(strategy)
     })
-    // if(!portfolio.currentPosition){
-    //   tryAndLog(function(){
-    //     let shouldOpenAmount = eval(open)
-    //     if(shouldOpenAmount){
-    //       portfolio.open(dayData, shouldOpenAmount)
-    //     }
-    //   })
-    // }
-    // else {
-    //   tryAndLog(()=>{
-    //     let shouldClose = eval(close)
-    //     if(shouldClose){
-    //       portfolio.close(dayData, idx)
-    //       callBack? callBack(portfolio.collect()) : console.log(portfolio.collect())
-    //       portfolio.initialize()
-    //     }
-    //   })
-    // }
   })
 
   return portfolio.collect()

@@ -1,6 +1,5 @@
 import React from 'react'
 import {FancyInput, FancySelect} from 'app/ui/primitives/fancyForm'
-
 import { INDICATORS, IndicatorAPI } from 'app/logic/indicators'
 const toSelectObj = (i)=>{return{key: i, label: i}}
 const indicatorNames = Object.keys(INDICATORS).map(toSelectObj)
@@ -9,7 +8,7 @@ export const IndicatorPanel = React.createClass({
   propTypes: {
     indicatorList: React.PropTypes.array,
     onAdd: React.PropTypes.func.isRequired,
-    onRemove: React.PropTypes.func.isRequired,
+    onRemove: React.PropTypes.func.isRequired
   },
 
   getDefaultProps(){

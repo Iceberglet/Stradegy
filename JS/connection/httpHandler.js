@@ -1,16 +1,17 @@
+const dataFolder = './data/';
+const fs = require('fs');
+
 function createHandler(){
   return {
-    createOrUpdateStrategy: function(strategy){
-
+    createOrUpdateStrategy: function(cb, name, content){
+      console.log(name, content)
+      fs.writeFile(dataFolder+name, content, cb)
     },
-    readStrategyList: function(){
-
+    readStrategyList: function(cb){
+      fs.readdir(dataFolder, cb);
     },
-    loadStrategy: function(name){
-      console.log('Looking For Strategy '+name+' Huh?')
-      return {
-        name, content: 'dummy'
-      }
+    loadStrategy: function(cb, name){
+      fs.readFile(dataFolder+name, 'utf8', cb)
     }
   }
 }

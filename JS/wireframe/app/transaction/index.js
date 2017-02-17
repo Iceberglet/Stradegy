@@ -1,9 +1,12 @@
 export const Transact = {}
 
-const portal = (action, content, cb)=>{
+const portal = (action, cb, ...args)=>{
   var http = new XMLHttpRequest();
   var url = 'portal';
-  var params = 'action='+action+'&content='+content
+  if(!args){
+    args = '[]'
+  }
+  var params = 'action='+action+'&args='+escape(JSON.stringify(args))
 
   http.open('POST', url, true);
 
@@ -12,18 +15,26 @@ const portal = (action, content, cb)=>{
 
   http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState === 4 && http.status === 200) {
-          alert(http.responseText, http.response);
-          console.log(http.responseText, http.response);
-          cb(http.responseText)
+          let res
+          try {
+            res = JSON.parse(http.responseText)
+          } catch (err) {
+            res = http.responseText
+          }
+          cb(res)
       }
   }
   http.send(params);
 }
 
-Transact.loadStrategy = (name, cb)=>{
-  portal('loadStrategy', name, cb)
+Transact.loadStrategy = (cb, name)=>{
+  portal('loadStrategy', cb, name)
 }
 
-Transact.createOrUpdateStrategy = (name, strategy, cb)=>{
-  portal('createOrUpdateStrategy', name, cb)
+Transact.createOrUpdateStrategy = (cb, name, strategy)=>{
+  portal('createOrUpdateStrategy', cb, name, strategy)
+}
+
+Transact.readStrategyList = (cb)=>{
+  portal('readStrategyList', cb)
 }

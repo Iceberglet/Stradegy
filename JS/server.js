@@ -35,35 +35,29 @@ app.get('/', function(req, res) {
 
 
 app.post('/portal', function(request, respond) {
-  let action = request.body.action
-
-  let content = request.body.content
-  if(typeof(content)==='object'){
-    content = JSON.parse(content)
+  try{
+    let action = request.body.action
+    let args = request.body.args
+    console.log(args)
+    if(typeof(args)==='string'){
+      args = JSON.parse(unescape(request.body.args))
+    }
+    if(!args || typeof args[Symbol.iterator] !== 'function'){
+      console.error(action, args)
+      throw new Error('Invalid Args')
+    }
+    if(action && arguments && requestHandler[action]){
+      requestHandler[action]((err, result)=>{
+        if(err){
+          throw err
+        }
+        respond.send(result)
+      }, ...args)
+    }
+  } catch(err) {
+    console.error(err)
+    respond.status(404).send(err)
   }
-  console.log(action)
-  if(action && content && requestHandler[action]){
-    let res = requestHandler[action](content)
-    console.log(res)
-    respond.send(res)
-  } else {
-    respond.status(404).send('Illegal Request')
-  }
-
-    // var body = '';
-    // filePath = __dirname + '/data/';
-    // request.on('data', function(data) {
-    //     body += data;
-    // });
 });
-
-
-//
-// connection.saveStrategy('First', '55', '33')
-//
-// connection.saveStrategy('Second', '132123', '33')
-//
-// connection.updateStrategy('Second', '5745674', '33')
-
 
 app.listen(8001);

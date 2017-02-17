@@ -2,6 +2,8 @@ import React from 'react'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 import CodeMirror from 'react-codemirror'
 import { Transact } from 'app/transaction'
+import {FancyInput, FancySelect} from 'app/ui/primitives/fancyForm'
+const toSelectObj = (i)=>{return{key: i, label: i}}
 
 const strategyContainerStyle = {
   display: 'flex',
@@ -53,8 +55,13 @@ export const StrategyPanel = React.createClass({
 
   getInitialState(){
     return {
-      code: this.props.code
+      code: this.props.code,
+      strategyList: []
     }
+  },
+
+  componentDidMount(){
+    this.getStrategies()
   },
 
   componentWillReceiveProps(props){
@@ -72,8 +79,38 @@ export const StrategyPanel = React.createClass({
     }
   },
 
+  getStrategies(){
+    Transact.readStrategyList((res)=>{
+      this.setState({
+        strategyList: res.map(toSelectObj)
+      })
+    })
+  },
+
+  onConfirmSelectStrategy(kv){
+    Transact.loadStrategy((res)=>{
+      this.setState({
+        chosenStrategy: kv.chosenStrategy,
+        code: res
+      })
+    }, kv.chosenStrategy.key)
+  },
+
+  onUpdate(){
+    Transact.createOrUpdateStrategy((res)=>{
+      console.log(res)
+    }, this.state.chosenStrategy.key, this.state.code)
+  },
+
   onSave(){
-    Transact.loadStrategy(this.state.code)
+    if(this.state.newStrategyName){
+      Transact.createOrUpdateStrategy((res)=>{
+        console.log(res)
+        this.getStrategies()
+      }, this.state.newStrategyName, this.state.code)
+    } else {
+      alert('You Must Choose A Strategy Name First')
+    }
   },
 
   onApply(){
@@ -86,6 +123,12 @@ export const StrategyPanel = React.createClass({
     })
   },
 
+  setStrategyName(name){
+    this.setState({
+      strategyName: name.newStrategyName
+    })
+  },
+
   render(){
     return (<div>
       <div style = {strategyContainerStyle}>
@@ -93,8 +136,21 @@ export const StrategyPanel = React.createClass({
           <div>Hello</div>
         </Foldable>
         <div style = {controllerStyle}>
+          <FancySelect ref={(s)=>{this.strategySelect = s}}
+              valueKey={'chosenStrategy'}
+              value={this.state.chosenStrategy}
+              label={'Chosen Strategy'}
+              values={this.state.strategyList}
+              onConfirmChange={this.onConfirmSelectStrategy}/>
+          <button style={buttonStyle} onClick={this.onUpdate}>Update</button>
+          <FancyInput ref={(s)=>{this.strategyInput = s}}
+              valueKey={'newStrategyName'}
+              value={this.state.strategyName}
+              label={'New Strategy Name'}
+              values={this.state.strategyList}
+              onConfirmChange={this.setStrategyName} />
           <button style={buttonStyle} onClick={this.onSave}>Save</button>
-          <button style={buttonStyle} onClick={this.onApply}>Apply</button>
+          <button style={buttonStyle} onClick={this.onApply}>Run</button>
         </div>
         <div style={textareaStyle} >
           <CodeMirror value={this.state.code || ''} onChange={this.onChangeCode} options={codeMirrorOption} />
