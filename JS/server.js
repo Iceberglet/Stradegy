@@ -18,25 +18,21 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // viewed at http://localhost:8080
 app.get('/wireframe/*', function(req, res) {
   let p =removeParam(path.join(__dirname + req.url))
-  console.log('GET Request For Wireframe Received')
+  // console.log('GET Request For Wireframe Received')
   res.sendFile(p);
 });
 
 app.get('/app/*', function(req, res) {
   let p =removeParam(path.join(__dirname + req.url))
-  console.log('GET Request For App Received')
+  // console.log('GET Request For App Received')
   res.sendFile(p);
 });
 
 app.get('/', function(req, res) {
-    console.log('GET Request For Home Page Received')
+    // console.log('GET Request For Home Page Received')
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.put('/', function (req, res) {
-  res.send('PUT request to homepage');
-  console.log('PUT Request For Home Page Received')
-});
 
 app.post('/portal', function(request, respond) {
   let action = request.body.action

@@ -72,6 +72,31 @@ export const CandleChart = React.createClass({
         legend: {
           enabled: true
         },
+        yAxis: [{ // left y axis
+            title: {
+                text: null
+            },
+            labels: {
+                align: 'left',
+                x: 3,
+                y: 16,
+                format: '{value:.,0f}'
+            },
+            showFirstLabel: false
+        }, { // right y axis
+            gridLineWidth: 0,
+            opposite: false,
+            title: {
+                text: null
+            },
+            labels: {
+                align: 'right',
+                x: -3,
+                y: 16,
+                format: '{value:.,0f}'
+            },
+            showFirstLabel: false
+        }],
         series: this.buildSeries()
     }
     return <HighChart ref={c=>{this.chartWrapper=c}} chartType='stockChart' options={options}/>

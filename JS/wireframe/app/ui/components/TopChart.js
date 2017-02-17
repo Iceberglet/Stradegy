@@ -18,12 +18,32 @@ export const TopChart = React.createClass({
   },
 
   addIndicator(indicator){
-    this.candleChart && this.candleChart.addOrUpdateSeries({
-      type: 'line',
-      metaType: 'indicator',
-      name: IndicatorAPI.getName(indicator),
-      lineWidth: 1,
-      data: INDICATORS[indicator.name](...indicator.params)(DATA[this.props.dataKey])
+    let data = INDICATORS[indicator.name](...indicator.params)(DATA[this.props.dataKey])
+    let stripped
+    if(data[0].length>2){
+      stripped = Array(data[0].length-1).fill([])
+      data.forEach((dayData)=>{
+        for(let i = 1; i < dayData.length; i++){
+          let newOne = [dayData[0], dayData[i]]
+          if(stripped[i-1].length===0){
+            stripped[i-1] = [newOne]
+          } else {
+            stripped[i-1].push(newOne)
+          }
+        }
+      })
+    } else {
+      stripped = [data]
+    }
+    stripped.forEach((s,i)=>{
+      this.candleChart && this.candleChart.addOrUpdateSeries({
+        type: 'line',
+        metaType: 'indicator',
+        name: IndicatorAPI.getName(indicator) + (stripped.length>1?('-'+i):''),
+        lineWidth: 1,
+        yAxis: IndicatorAPI.separateAxis(indicator)? 1 : 0,
+        data: s
+      })
     })
   },
 
