@@ -39,6 +39,7 @@ export const TopChart = React.createClass({
       this.candleChart && this.candleChart.addOrUpdateSeries({
         type: 'line',
         metaType: 'indicator',
+        cropThreshold: 500,
         name: IndicatorAPI.getName(indicator) + (stripped.length>1?('-'+i):''),
         lineWidth: 1,
         yAxis: IndicatorAPI.separateAxis(indicator)? 1 : 0,
