@@ -14,6 +14,9 @@ export const TopChart = React.createClass({
     this.candleChart && this.candleChart.clear()
     this.addBaseSeries()
     indicators.forEach(this.addIndicator)
+
+    let c = this.candleChart.getChart()
+    c.series.find(s=>s.name==='Navigator').setData(DATA[this.props.dataKey])
   },
 
   addIndicator(indicator){
@@ -103,6 +106,7 @@ export const TopChart = React.createClass({
       this.candleChart && this.candleChart.addOrUpdateSeries({
         type: 'candlestick',
         metaType: 'data',
+        showInNavigator: true,
         name: this.props.dataKey,
         data: candleData,
         dataGrouping: {

@@ -10,7 +10,7 @@ export const CandleChart = React.createClass({
 
   //For Indicators and Trade Data ONLY
   addOrUpdateSeries(options){
-    let chart = this.chartWrapper.getHighChart()
+    let chart = this.getChart()
     let series = chart.series.find(s=>s.name===options.name)
     if(!series){
       chart.addSeries(options)
@@ -20,20 +20,24 @@ export const CandleChart = React.createClass({
   },
 
   removeSeries(name){
-    let chart = this.chartWrapper.getHighChart()
+    let chart = this.getChart()
     chart.series.filter(s=>s.name.startsWith(name)).forEach(s=>s.remove())
   },
 
   getAllIndicators(){
-    let chart = this.chartWrapper.getHighChart()
+    let chart = this.getChart()
     return chart.series.map(s=>s.userOptions.indicator).filter(s=>s)
   },
 
   clear(){
-    let chart = this.chartWrapper.getHighChart()
-    while(chart.series.length > 0){
-      chart.series[0].remove(true);
+    let chart = this.getChart()
+    while(chart.series.filter(s=>s.name!=='Navigator').length > 0){
+      chart.series.filter(s=>s.name!=='Navigator')[0].remove(true);
     }
+  },
+
+  getChart(){
+    return this.chartWrapper.getHighChart()
   },
 
   render(){
