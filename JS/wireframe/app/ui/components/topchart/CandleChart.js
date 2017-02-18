@@ -31,8 +31,8 @@ export const CandleChart = React.createClass({
 
   clear(){
     let chart = this.getChart()
-    while(chart.series.filter(s=>s.name!=='Navigator').length > 0){
-      chart.series.filter(s=>s.name!=='Navigator')[0].remove(true);
+    while(chart.series.length > 0){
+      chart.series[0].remove(true);
     }
   },
 
@@ -40,8 +40,12 @@ export const CandleChart = React.createClass({
     return this.chartWrapper.getHighChart()
   },
 
-  render(){
-    let options = {
+  update(){
+    this.getChart().update(this.getOptions())
+  },
+
+  getOptions(){
+    return {
         rangeSelector: {
             selected: 1
         },
@@ -78,6 +82,9 @@ export const CandleChart = React.createClass({
         }],
         series: []
     }
-    return <HighChart ref={c=>{this.chartWrapper=c}} chartType='stockChart' options={options}/>
+  },
+
+  render(){
+    return <HighChart ref={c=>{this.chartWrapper=c}} chartType='stockChart' options={this.getOptions()}/>
   }
 })

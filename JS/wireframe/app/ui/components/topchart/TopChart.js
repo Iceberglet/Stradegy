@@ -11,12 +11,12 @@ export const TopChart = React.createClass({
 
   refresh(){
     let indicators = this.candleChart && this.candleChart.getAllIndicators()
-    this.candleChart && this.candleChart.clear()
-    this.addBaseSeries()
-    indicators.forEach(this.addIndicator)
-
-    let c = this.candleChart.getChart()
-    c.series.find(s=>s.name==='Navigator').setData(DATA[this.props.dataKey])
+    if(this.candleChart){
+      this.candleChart.clear()
+      this.candleChart.update()
+      this.addBaseSeries()
+      indicators.forEach(this.addIndicator)
+    }
   },
 
   addIndicator(indicator){

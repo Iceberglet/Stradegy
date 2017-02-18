@@ -40,7 +40,7 @@ export const HighChart=React.createClass({
       throw new Error('HighChart Does Not Contain a type ' + chartType);
     }
 
-    this.chart = new Highcharts[chartType]({
+    this.chart = Highcharts[chartType]({
       ...options,
       chart: {
         ...chartConfig,
