@@ -23,7 +23,8 @@ INDICATORS.ROC = function(n){
     let red = []
     data.forEach((d, idx)=>{
       if(idx>=n){
-        red.push([d[0], d[4]/data[idx-n][4]])
+        let p=data[idx-n][4]
+        red.push([d[0], (d[4]-p)/p])
       }
     })
     red.forEach((r, idx)=>{

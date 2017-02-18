@@ -16,9 +16,9 @@ export const App = React.createClass({
       indicators: [
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
-        {name: 'EMA', params: [9]},
-        {name: 'EMA', params: [24]},
-        {name: 'ROC', params: [14]},
+        {name: 'EMA', params: [6]},
+        {name: 'EMA', params: [12]},
+        {name: 'ROC', params: [5]},
         {name: 'RSI', params: [5]}
       ]
     }
