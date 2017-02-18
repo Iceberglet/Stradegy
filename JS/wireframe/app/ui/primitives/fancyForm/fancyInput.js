@@ -7,6 +7,8 @@ export const FancyInput = React.createClass({
     value: React.PropTypes.string,
     validateEvent: React.PropTypes.func,
     readonly: React.PropTypes.bool,
+    labelStyle: React.PropTypes.object,
+    textStyle: React.PropTypes.object,
     onConfirmChange: React.PropTypes.func //Returns {this.props.key: this.props.value}
   },
 
@@ -65,12 +67,12 @@ export const FancyInput = React.createClass({
   render(){
     let placeHolderClass = 'place-holder ' + (( this.state.value || this.state.selected ) && 'minimal')
     return <div className='fancy' style={{width: '200px'}}>
-      <div className={placeHolderClass} onClick={this.onClickLabel}>{this.props.label}</div>
+      <div style={this.props.labelStyle} className={placeHolderClass} onClick={this.onClickLabel}>{this.props.label}</div>
       <div className={'fancy-input-wrapper'}>
         {
           this.props.readonly?
-          <div className='fancy-input'>{this.props.value}</div> :
-          <input className='fancy-input' ref={i=>{this.input=i}} onKeyPress={this.validate} onFocus={this.onFocus}
+          <div style={this.props.textStyle} className='fancy-input'>{this.props.value}</div> :
+          <input style={this.props.textStyle} className='fancy-input' ref={i=>{this.input=i}} onKeyPress={this.validate} onFocus={this.onFocus}
                   onBlur={this.onBlur} defaultValue = {this.state.value} onChange={this.onChange} />
         }
         <span className='underline' />

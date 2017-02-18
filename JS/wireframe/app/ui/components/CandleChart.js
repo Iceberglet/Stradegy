@@ -37,10 +37,7 @@ export const CandleChart = React.createClass({
 
   removeSeries(name){
     let chart = this.chartWrapper.getHighChart()
-    let series = chart.series.find(s=>s.name===name)
-    if(series){
-      series.remove()
-    }
+    chart.series.filter(s=>s.name.startsWith(name)).forEach(s=>s.remove())
   },
 
   buildSeries(){

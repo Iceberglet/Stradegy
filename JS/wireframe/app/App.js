@@ -4,6 +4,7 @@ import 'app/ui/styles/base.css'
 import 'app/ui/styles/foldable.css'
 import 'app/logic/utility.js'
 import 'app/ui/styles/codemirror.css';
+import 'codemirror/mode/javascript/javascript.js';
 import { TopChart, IndicatorPanel, StrategyPanel } from 'app/ui/components'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 import { StrategyExecutor } from 'app/logic/StrategyExecutor'

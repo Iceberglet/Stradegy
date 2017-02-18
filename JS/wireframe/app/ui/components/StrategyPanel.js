@@ -34,16 +34,19 @@ const textareaStyle = {
   whiteSpace: 'nowrap'
 }
 
-const buttonStyle = {
-  width: '50%',
-  margin: '5px',
-  fontSize: '24px'
-}
-
 const codeMirrorOption = {
   lineNumbers: 'true',
   mode: 'javascript',
   readOnly: false
+}
+
+const fancyInputStyleOverride={
+  labelStyle: {
+    color: '#adadad'
+  },
+  textStyle: {
+    color: 'white'
+  }
 }
 
 export const StrategyPanel = React.createClass({
@@ -125,7 +128,7 @@ export const StrategyPanel = React.createClass({
 
   setStrategyName(name){
     this.setState({
-      strategyName: name.newStrategyName
+      newStrategyName: name.newStrategyName
     })
   },
 
@@ -141,16 +144,17 @@ export const StrategyPanel = React.createClass({
               value={this.state.chosenStrategy}
               label={'Chosen Strategy'}
               values={this.state.strategyList}
-              onConfirmChange={this.onConfirmSelectStrategy}/>
-          <button style={buttonStyle} onClick={this.onUpdate}>Update</button>
+              onConfirmChange={this.onConfirmSelectStrategy}
+              {...fancyInputStyleOverride}/>
+          <button className={'base-button'} onClick={this.onUpdate}>Update</button>
           <FancyInput ref={(s)=>{this.strategyInput = s}}
               valueKey={'newStrategyName'}
-              value={this.state.strategyName}
+              value={this.state.newStrategyName}
               label={'New Strategy Name'}
-              values={this.state.strategyList}
-              onConfirmChange={this.setStrategyName} />
-          <button style={buttonStyle} onClick={this.onSave}>Save</button>
-          <button style={buttonStyle} onClick={this.onApply}>Run</button>
+              onConfirmChange={this.setStrategyName}
+              {...fancyInputStyleOverride}/>
+          <button className={'base-button'} onClick={this.onSave}>Save</button>
+          <button className={'base-button'} onClick={this.onApply}>Run</button>
         </div>
         <div style={textareaStyle} >
           <CodeMirror value={this.state.code || ''} onChange={this.onChangeCode} options={codeMirrorOption} />

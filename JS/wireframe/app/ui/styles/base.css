@@ -19,11 +19,20 @@
   height: 100%;
 }
 
-button{
+.base-button{
   border: none;
   border-radius: 4px;
-  background: cyan;
+  background: #49bcff;
   color: black;
-  min-height: 24px;
-  
+  height: 30px;
+  width: 30%;
+  margin: 5px;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.base-button:hover{
+  font-size: 26px;
+  background: #157bb7;
 }

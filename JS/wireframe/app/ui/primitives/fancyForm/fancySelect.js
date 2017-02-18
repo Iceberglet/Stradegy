@@ -12,6 +12,8 @@ export const FancySelect = React.createClass({
     onConfirmChange: React.PropTypes.func, //takes {this.props.key: this.props.value} as input. Used to change upon udpate of values
     invalidProtocol: React.PropTypes.oneOf(['keep', 'discard', 'empty']),
     readonly: React.PropTypes.bool,
+    labelStyle: React.PropTypes.object,
+    textStyle: React.PropTypes.object,
     itemRender: React.PropTypes.func  //To Render Individual Items
   },
 
@@ -201,12 +203,12 @@ export const FancySelect = React.createClass({
         </div>
       </div>
 
-      <div className={placeHolderClass} onClick={this.onClickLabel}>{this.props.label}</div>
+      <div style={this.props.labelStyle} className={placeHolderClass} onClick={this.onClickLabel}>{this.props.label}</div>
       <div className={'fancy-input-wrapper'}>
       {
         this.props.readonly?
-        <div className='fancy-input'>{this.props.value.key}</div> :
-        <input className='fancy-input' ref={i=>{this.input=i}} onFocus={this.onFocus} onBlur={this.onBlur}
+        <div style={this.props.textStyle} className='fancy-input'>{this.props.value.key}</div> :
+        <input style={this.props.textStyle} className='fancy-input' ref={i=>{this.input=i}} onFocus={this.onFocus} onBlur={this.onBlur}
                   onKeyDown={this.onKeyDown} onChange={(e)=>{this.onChangeInput(e.target.value)}} defaultValue = {this.state.value}/>
       }
         <span className='underline' />
