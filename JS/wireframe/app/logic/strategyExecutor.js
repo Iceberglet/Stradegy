@@ -1,13 +1,13 @@
 
 const deepClone = (o)=>JSON.parse(JSON.stringify(o))
 
-const tryAndLog = (f)=>{
-  try{
-    f()
-  } catch(error){
-    console.error(error)
-  }
-}
+// const tryAndLog = (f)=>{
+//   try{
+//     f()
+//   } catch(error){
+//     console.error(error)
+//   }
+// }
 
 //IMPORTANT ASSUMPTION: All indicators have continuous evaluations.
 //i.e. From a certain point onwards, each data point will have a unique indicator value point for each of the indicators associated
@@ -31,7 +31,7 @@ export const StrategyExecutor = function(data, indicatorDataObj){
 }
 
 //Callback object is used to emit result (time0-1, price0-1)
-StrategyExecutor.prototype.run = function(strategy, configs){
+StrategyExecutor.prototype.run = function(strategy){
   /********************** Define API ****************************/
   //Define Indicators
   let IND = {}
@@ -44,9 +44,12 @@ StrategyExecutor.prototype.run = function(strategy, configs){
 
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{
-    tryAndLog(()=>{
+    try{
       eval(strategy)
-    })
+    }catch(err){
+      console.log(err)
+      return
+    }
   })
 
   return portfolio.collect()
@@ -72,15 +75,16 @@ const PortfolioStatus = function(){
       actionList.push(action)
       return action
     },
-    markClosePosition: function(otherPortfolio, dayData){
+    markClosePosition: function(openPosition, dayData){
       let action = new PortfolioAction()
-      otherPortfolio.status = 'closed'
+      openPosition.status = 'closed'
       action.status = 'closed'
       action.type = 'close'
       action.time = dayData[0]
-      action.notional = -otherPortfolio.notional
+      action.notional = -openPosition.notional
       action.price = dayData[4]
-      action.pnl = otherPortfolio.notional * (dayData[4] - otherPortfolio.price)
+      action.pnl = openPosition.notional * (dayData[4] - openPosition.price)
+      action.openPosition = openPosition
       actionList.push(action)
       return action
     },
@@ -88,11 +92,10 @@ const PortfolioStatus = function(){
       return actionList.filter(a =>a.status==='opened' && a.type==='open')
     },
     collect: function(){
-      let toScatterBean = (action)=>[action.time, action.price, action.notional]
       return {
-        openLong: actionList.filter(a=>a.type==='open' && a.notional > 0).map(toScatterBean),
-        openShort: actionList.filter(a=>a.type==='open' && a.notional < 0).map(toScatterBean),
-        close: actionList.filter(a=>a.type==='close').map(toScatterBean)
+        openLong: actionList.filter(a=>a.type==='open' && a.status==='closed' && a.notional > 0),
+        openShort: actionList.filter(a=>a.type==='open' && a.status==='closed' && a.notional < 0),
+        close: actionList.filter(a=>a.type==='close')
       }
     }
   }

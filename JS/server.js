@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var connection = require('./connection/mssql-connection');
+// var connection = require('./connection/mssql-connection');
 var requestHandler = require('./connection/httpHandler');
 var bodyParser = require('body-parser');
 

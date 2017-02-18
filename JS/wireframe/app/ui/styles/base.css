@@ -4,6 +4,19 @@
   cursor: pointer;
 }
 
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.flex-item-1 {
+  flex: 1;
+}
+
+.flex-item-2 {
+  flex: 2;
+}
+
 .icon.icon-adjust{
   padding-right: 5px;
   position: relative;

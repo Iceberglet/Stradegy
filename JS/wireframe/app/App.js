@@ -7,7 +7,8 @@ import 'app/ui/styles/codemirror.css';
 import 'codemirror/mode/javascript/javascript.js';
 import { TopChart, IndicatorPanel, StrategyPanel } from 'app/ui/components'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
-import { StrategyExecutor } from 'app/logic/StrategyExecutor'
+import { StrategyExecutor } from 'app/logic/strategyExecutor'
+import { analyse } from 'app/logic/resultAnalyser'
 
 export const App = React.createClass({
   getDefaultProps(){
@@ -16,7 +17,7 @@ export const App = React.createClass({
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
         {name: 'EMA', params: [15]},
-        {name: 'RSI', params: [14]}
+        {name: 'EMA', params: [60]}
         // {name: 'EMA', params: [80]},
         // {name: 'EMA', params: [160]}
       ]
@@ -77,9 +78,11 @@ export const App = React.createClass({
     */
 
     let res = strategyExecutor.run(strategy)
-    this.tc.addOpenLongSeries(res.openLong)
-    this.tc.addOpenShortSeries(res.openShort)
-    this.tc.addCloseSeries(res.close)
+    let toScatterBean = (action)=>[action.time, action.price, action.notional]
+    this.tc.addOpenLongSeries(res.openLong.map(toScatterBean))
+    this.tc.addOpenShortSeries(res.openShort.map(toScatterBean))
+    this.tc.addCloseSeries(res.close.map(toScatterBean))
+    this.strategyPanel.notifyResult(analyse(this.getData(),res.openLong,res.openShort,res.close))
   },
 
   render(){
@@ -94,7 +97,7 @@ export const App = React.createClass({
         </div>
       </div>
 
-      <StrategyPanel onApply={this.test}/>
+      <StrategyPanel ref={p=>{this.strategyPanel=p}} onApply={this.test}/>
     </div>)
   }
 })
