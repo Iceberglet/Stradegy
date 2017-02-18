@@ -7,8 +7,8 @@ export const CandleChart = React.createClass({
   propTypes: {
     // dataKey: React.PropTypes.string.isRequired,
     // indicators: React.PropTypes.array,
-    candleKey: React.PropTypes.string.isRequired,
-    candleData: React.PropTypes.array.isRequired
+    title: React.PropTypes.string.isRequired
+    // candleData: React.PropTypes.array.isRequired
     // indicatorsData: React.PropTypes.object,   //key is indicator name
     // strategyData: React.PropTypes.array
   },
@@ -40,22 +40,16 @@ export const CandleChart = React.createClass({
     chart.series.filter(s=>s.name.startsWith(name)).forEach(s=>s.remove())
   },
 
-  buildSeries(){
-    let result = []
-    result.push({
-      type: 'candlestick',
-      metaType: 'data',
-      name: this.props.candleKey,
-      data: this.props.candleData,
-      dataGrouping: {
-        units: [
-            ['day', [3]],
-            ['week',[1, 2]],
-            ['month',[1, 3]]
-        ]
-      }
-    })
-    return result
+  getAllIndicators(){
+    let chart = this.chartWrapper.getHighChart()
+    return chart.series.map(s=>s.userOptions.indicator).filter(s=>s)
+  },
+
+  clear(){
+    let chart = this.chartWrapper.getHighChart()
+    while(chart.series.length > 0){
+      chart.series[0].remove(true);
+    }
   },
 
   render(){
@@ -64,7 +58,7 @@ export const CandleChart = React.createClass({
             selected: 1
         },
         title: {
-            text: this.props.candleKey
+            text: this.props.title
         },
         legend: {
           enabled: true
@@ -94,7 +88,7 @@ export const CandleChart = React.createClass({
             },
             showFirstLabel: false
         }],
-        series: this.buildSeries()
+        series: []
     }
     return <HighChart ref={c=>{this.chartWrapper=c}} chartType='stockChart' options={options}/>
   }

@@ -6,9 +6,9 @@ export const FancySelect = React.createClass({
   propTypes: {
     itemHeight: React.PropTypes.number,
     label: React.PropTypes.string,
-    values: React.PropTypes.array,  //list of {key: XXX, label: XXX} objects
+    values: React.PropTypes.array,  //list of string
     valueKey: React.PropTypes.string.isRequired,
-    value: React.PropTypes.object,  //One of {key: XXX, label: XXX} obj
+    value: React.PropTypes.string,  //One of strings
     onConfirmChange: React.PropTypes.func, //takes {this.props.key: this.props.value} as input. Used to change upon udpate of values
     invalidProtocol: React.PropTypes.oneOf(['keep', 'discard', 'empty']),
     readonly: React.PropTypes.bool,
@@ -35,7 +35,7 @@ export const FancySelect = React.createClass({
   getStatesFromProps(props){
     let arr = props.values.slice()
     if(this.input){
-      this.input.value = (props.value && props.value.label) || ''
+      this.input.value = props.value || ''
     }
     return {
       value: props.value,
@@ -59,8 +59,8 @@ export const FancySelect = React.createClass({
   },
 
   onBlur(){
-    let v = this.props.values.find(o=>this.input.value===o.label) || this.onInvalidValue()
-    let token = v === undefined? '' : v.label
+    let v = this.props.values.find(o=>this.input.value===o) || this.onInvalidValue()
+    let token = v === undefined? '' : v
     this.setState({
       value: v,
       selected: false,
@@ -97,7 +97,7 @@ export const FancySelect = React.createClass({
       this.setState({
         highLightValue: Math.max(0, this.state.highLightValue - 1)
       }, ()=>{
-        this.input.value = this.state.selectableValues[this.state.highLightValue].label
+        this.input.value = this.state.selectableValues[this.state.highLightValue]
         this.scrollToHighlighted()
       })
       e.preventDefault()
@@ -106,25 +106,25 @@ export const FancySelect = React.createClass({
       this.setState({
         highLightValue: Math.min(this.state.selectableValues.length - 1, this.state.highLightValue + 1)
       }, ()=>{
-        this.input.value = this.state.selectableValues[this.state.highLightValue].label
+        this.input.value = this.state.selectableValues[this.state.highLightValue]
         this.scrollToHighlighted()
       })
       e.preventDefault()
     } else if (e.keyCode === 13){
       //Enter
-      let keyLabel
+      let value
       if(this.state.selectableValues.length === 0){
-        keyLabel = this.onInvalidValue()
+        value = this.onInvalidValue()
       } else {
-        keyLabel = this.state.selectableValues[this.state.highLightValue]
+        value = this.state.selectableValues[this.state.highLightValue]
       }
 
       this.setState({
-        value: keyLabel,
+        value,
         selected: false
       }, ()=>{
         this.input.blur()
-        this.input.value = keyLabel.label
+        this.input.value = value
       })
     }
   },
@@ -161,12 +161,12 @@ export const FancySelect = React.createClass({
   },
 
   //on select a value
-  onSelectItem(keyLabel){
+  onSelectItem(v){
     this.setState({
-      value: keyLabel,
+      value: v,
       selected: false
     }, ()=>{
-      this.input.value = keyLabel.label
+      this.input.value = v
     })
   },
 
@@ -176,13 +176,13 @@ export const FancySelect = React.createClass({
     })
   },
 
-  renderOption(keyLabel, idx){
+  renderOption(v, idx){
     let className = idx===this.state.highLightValue ? 'fancy-select-item highlight' : 'fancy-select-item'
     return <div className={className}
                 style={{height: this.props.itemHeight + 'px', maxHeight: this.props.itemHeight + 'px'}}
-                onMouseDown={()=>{this.onSelectItem(keyLabel)}}
-                onMouseEnter={()=>{this.onHoverItem(keyLabel)}}
-                key={idx}>{this.props.itemRender? this.props.itemRender(keyLabel) : keyLabel.label}
+                onMouseDown={()=>{this.onSelectItem(v)}}
+                onMouseEnter={()=>{this.onHoverItem(v)}}
+                key={idx}>{this.props.itemRender? this.props.itemRender(v) : v}
             </div>
   },
 
@@ -207,7 +207,7 @@ export const FancySelect = React.createClass({
       <div className={'fancy-input-wrapper'}>
       {
         this.props.readonly?
-        <div style={this.props.textStyle} className='fancy-input'>{this.props.value.key}</div> :
+        <div style={this.props.textStyle} className='fancy-input'>{this.props.value}</div> :
         <input style={this.props.textStyle} className='fancy-input' ref={i=>{this.input=i}} onFocus={this.onFocus} onBlur={this.onBlur}
                   onKeyDown={this.onKeyDown} onChange={(e)=>{this.onChangeInput(e.target.value)}} defaultValue = {this.state.value}/>
       }

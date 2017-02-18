@@ -3,7 +3,6 @@ import { Foldable } from 'app/ui/primitives/foldable/Foldable'
 import CodeMirror from 'react-codemirror'
 import { Transact } from 'app/transaction'
 import {FancyInput, FancySelect} from 'app/ui/primitives/fancyForm'
-const toSelectObj = (i)=>{return{key: i, label: i}}
 
 const strategyContainerStyle = {
   display: 'flex',
@@ -85,7 +84,7 @@ export const StrategyPanel = React.createClass({
   getStrategies(){
     Transact.readStrategyList((res)=>{
       this.setState({
-        strategyList: res.map(toSelectObj)
+        strategyList: res
       })
     })
   },
@@ -96,7 +95,7 @@ export const StrategyPanel = React.createClass({
         chosenStrategy: kv.chosenStrategy,
         code: res
       })
-    }, kv.chosenStrategy.key)
+    }, kv.chosenStrategy)
   },
 
   onUpdate(){

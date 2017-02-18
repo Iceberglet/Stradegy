@@ -23,12 +23,19 @@ export const App = React.createClass({
     }
   },
 
-  // onChangeIndicator(list){
-  //   console.log(list)
-  //   this.setState({
-  //     indicators: list
-  //   })
-  // },
+  getInitialState(){
+    return {
+      dataKey: 'USDJPY'
+    }
+  },
+
+  onChangeDataKey(dataKey){
+    this.setState({
+      dataKey
+    }, ()=>{
+      this.tc && this.tc.refresh()
+    })
+  },
 
   onAddIndicator(indicator){
     this.tc && this.tc.addIndicator(indicator)
@@ -80,10 +87,10 @@ export const App = React.createClass({
 
       <div style={{display: 'flex', position: 'relative', overflow: 'hidden'}}>
         <Foldable label={'Indicators'} >
-          <IndicatorPanel indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} />
+          <IndicatorPanel dataKey={this.state.dataKey} indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} onChangeDataKey={this.onChangeDataKey}/>
         </Foldable>
         <div style={{flex: 1, height: '500px'}}>
-          <TopChart ref={tc=>{this.tc=tc}} dataKey='USDJPY' indicatorConfig={this.props.indicators}/>
+          <TopChart ref={tc=>{this.tc=tc}} dataKey={this.state.dataKey} indicatorConfig={this.props.indicators}/>
         </div>
       </div>
 

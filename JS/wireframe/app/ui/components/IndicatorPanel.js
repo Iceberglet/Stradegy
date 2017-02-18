@@ -1,14 +1,17 @@
 import React from 'react'
 import {FancyInput, FancySelect} from 'app/ui/primitives/fancyForm'
 import { INDICATORS, IndicatorAPI } from 'app/logic/indicators'
-const toSelectObj = (i)=>{return{key: i, label: i}}
-const indicatorNames = Object.keys(INDICATORS).map(toSelectObj)
+import * as DATA from 'app/data'
+const dataKeys = Object.keys(DATA)
+const indicatorNames = Object.keys(INDICATORS)
 
 export const IndicatorPanel = React.createClass({
   propTypes: {
     indicatorList: React.PropTypes.array,
+    dataKey: React.PropTypes.string,
     onAdd: React.PropTypes.func.isRequired,
-    onRemove: React.PropTypes.func.isRequired
+    onRemove: React.PropTypes.func.isRequired,
+    onChangeDataKey: React.PropTypes.func.isRequired
   },
 
   getDefaultProps(){
@@ -42,7 +45,7 @@ export const IndicatorPanel = React.createClass({
   },
 
   onClickAdd(){
-    let newItem = {name: this.state.newItem.name.key, params: JSON.parse(this.state.newItem.params)}
+    let newItem = {name: this.state.newItem.name, params: JSON.parse(this.state.newItem.params)}
     if(this.state.indicatorList.find(i=>IndicatorAPI.equals(i, newItem))){
       console.warn('Adding a duplicate indicator! Ignored!', newItem)
       return
@@ -54,10 +57,18 @@ export const IndicatorPanel = React.createClass({
     }, ()=>this.props.onAdd(newItem))
   },
 
+  onChangeDataKey(kv){
+    this.setState({
+      dataKey: kv.dataKey
+    }, ()=>{
+      this.props.onChangeDataKey && this.props.onChangeDataKey(kv.dataKey)
+    })
+  },
+
   //{name: params: }
   renderItem(indicator){
     return (<div className='fancy-indicator-container' key={indicator.name+JSON.stringify(indicator.params)}>
-        <FancySelect label='Name' value={toSelectObj(indicator.name)} readonly={true} valueKey='name' values={indicatorNames}/>
+        <FancySelect label='Name' value={indicator.name} readonly={true} valueKey='name' values={indicatorNames}/>
         <FancyInput label='Params' value={JSON.stringify(indicator.params)} readonly={true} valueKey='params'/>
         <i className='fa fa-times icon icon-adjust' onClick={()=>this.onClickRemove(indicator)}></i>
       </div>)
@@ -66,6 +77,9 @@ export const IndicatorPanel = React.createClass({
   render(){
     let newItem = this.state.newItem
     return (<div style={{overflow: 'scroll', height: '100%'}}>
+        {<div className='fancy-indicator-container' key='dataKey'>
+            <FancySelect label='Financial Product' value={this.state.dataKey} onConfirmChange={this.onChangeDataKey} valueKey='dataKey' values={dataKeys}/>
+        </div>}
         {this.state.indicatorList.map(this.renderItem)}
         {<div className='fancy-indicator-container' key='newItem'>
             <FancySelect label='Name' value={newItem && newItem.name} onConfirmChange={this.onChangeNewConfig} valueKey='name' values={indicatorNames}/>

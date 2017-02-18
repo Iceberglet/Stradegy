@@ -9,12 +9,11 @@ export const TopChart = React.createClass({
     indicatorConfig: React.PropTypes.array
   },
 
-  getCandleData(){
-    if(DATA[this.props.dataKey]){
-      return DATA[this.props.dataKey]
-    } else {
-      console.error('Unable to find data of type: ', this.props.dataKey, 'Existing Data Obj: ', DATA)
-    }
+  refresh(){
+    let indicators = this.candleChart && this.candleChart.getAllIndicators()
+    this.candleChart && this.candleChart.clear()
+    this.addBaseSeries()
+    indicators.forEach(this.addIndicator)
   },
 
   addIndicator(indicator){
@@ -39,6 +38,7 @@ export const TopChart = React.createClass({
       this.candleChart && this.candleChart.addOrUpdateSeries({
         type: 'line',
         metaType: 'indicator',
+        indicator,
         cropThreshold: 500,
         name: IndicatorAPI.getName(indicator) + (stripped.length>1?('-'+i):''),
         lineWidth: 1,
@@ -93,15 +93,38 @@ export const TopChart = React.createClass({
     })
   },
 
+  addBaseSeries(){
+    if(this.props.dataKey){
+      let candleData = DATA[this.props.dataKey]
+      this.candleChart && this.candleChart.addOrUpdateSeries({
+        type: 'candlestick',
+        metaType: 'data',
+        name: this.props.dataKey,
+        data: candleData,
+        dataGrouping: {
+          units: [
+              ['day', [3]],
+              ['week',[1, 2]],
+              ['month',[1, 3]]
+          ]
+        }
+      })
+    }
+    else {
+      console.error('No DataKey Defined For Stock Chart')
+    }
+  },
+
   removeIndicator(indicator){
     this.candleChart && this.candleChart.removeSeries(IndicatorAPI.getName(indicator))
   },
 
   componentDidMount(){
+    this.addBaseSeries()
     this.props.indicatorConfig && this.props.indicatorConfig.forEach(this.addIndicator)
   },
 
   render(){
-    return (<CandleChart ref={c=>{this.candleChart = c}} candleKey={this.props.dataKey} candleData={this.getCandleData()} />)
+    return (<CandleChart ref={c=>{this.candleChart = c}} title={this.props.dataKey} />)
   }
 })
