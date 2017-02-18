@@ -38,18 +38,17 @@ INDICATORS.ROC = function(n){
 
 INDICATORS.RSI = function(n){
   return function(data){
-    return data.slice(n-1).map((dayData,idx)=>{
-      let rs = data.slice(idx, idx+n).reduce((p,c)=>{
-        if(c[4]-c[1]>0){//close>open
-          p[0].push(c[4]-c[1])
-        } else {
-          p[1].push(c[1]-c[4])
-        }
-        return p
-      },[[], []])
-      rs = average(rs[0])/average(rs[1])
-      return [dayData[0], 1-1/(1+rs)]
+    let U = [], D = [], rs = []
+    U.push(data.slice(0,n).reduce((p,c)=>p+Math.max(c[4]-c[1],0),0)/n)
+    D.push(data.slice(0,n).reduce((p,c)=>p+Math.max(c[1]-c[4],0),0)/n)
+    data.slice(n).forEach((d,idx)=>{
+      let newU = (U[idx]*(n-1)+Math.max(d[4]-d[1],0))/n
+      let newD = (D[idx]*(n-1)+Math.max(d[1]-d[4],0))/n
+      U.push(newU)
+      D.push(newD)
+      rs.push([d[0],newU/newD])
     })
+    return rs.map(a=>[a[0],1-1/(1+a[1])])
   }
 }
 

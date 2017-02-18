@@ -16,10 +16,10 @@ export const App = React.createClass({
       indicators: [
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
-        {name: 'EMA', params: [15]},
-        {name: 'EMA', params: [60]}
-        // {name: 'EMA', params: [80]},
-        // {name: 'EMA', params: [160]}
+        {name: 'EMA', params: [9]},
+        {name: 'EMA', params: [24]},
+        {name: 'ROC', params: [14]},
+        {name: 'RSI', params: [5]}
       ]
     }
   },
