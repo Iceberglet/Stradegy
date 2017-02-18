@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import { HighChart } from 'chart'
 
 const displayItems = {
@@ -17,18 +18,40 @@ export const StrategyResult = React.createClass({
 
   buildOptions(){
     return {
+      rangeSelector: {
+            selected: 1
+      },
       title: {
         text: 'Running PnL'
       },
+      tooltip: {
+        formatter: function(){
+          return '<b>'+moment(this.x).format('YYYY-MMM-DD')+': </b>' + this.y.toFixed(2)
+        }
+      },
+      xAxis: {
+        type: 'datetime'
+      },
       yAxis: {
-        value: this.props.result.averagePnL,
-        label: {
-          text: 'Average PnL'
+        title: {
+          text: 'PnL'
         },
-        color: 'white'
+        plotLines: [{
+          value: this.props.result.averagePnL,
+          label: {
+            text: 'Average PnL',
+            style: {
+              color: 'white'
+            }
+          },
+          dashStyle: 'shortdash',
+          width: 2,
+          color: 'white'
+        }]
       },
       series: [{
         type: 'scatter',
+        name: 'Running PnL',
         data: this.props.result.pnlSeries
       }]
     }
