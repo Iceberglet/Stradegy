@@ -3,6 +3,8 @@
 
 const isNotNull = (num)=>num!==null&&num!==undefined
 
+const average = (a)=>a.reduce((p,c)=>p+c,0)/a.length
+
 export const INDICATORS = {}
 
 INDICATORS.Floor = function(n){return function(data){return data.map((d,idx)=>idx>=n-1?[d[0],Math.min(...data.slice(idx-n+1,idx+1).map(dArr=>dArr[3]))]:null).filter(isNotNull)}}
@@ -34,10 +36,27 @@ INDICATORS.ROC = function(n){
   }
 }
 
+INDICATORS.RSI = function(n){
+  return function(data){
+    return data.slice(n-1).map((dayData,idx)=>{
+      let rs = data.slice(idx, idx+n).reduce((p,c)=>{
+        if(c[4]-c[1]>0){//close>open
+          p[0].push(c[4]-c[1])
+        } else {
+          p[1].push(c[1]-c[4])
+        }
+        return p
+      },[[], []])
+      rs = average(rs[0])/average(rs[1])
+      return [dayData[0], 1-1/(1+rs)]
+    })
+  }
+}
+
 export const IndicatorAPI = {}
 
 IndicatorAPI.getName = function(obj){return obj.name+JSON.stringify(obj.params)}
 
 IndicatorAPI.equals = function(a, b){return a.name===b.name && a.params.equals(b.params)}
 
-IndicatorAPI.separateAxis = function(indicator){return ['ROC', 'MACD'].indexOf(indicator.name)>-1}
+IndicatorAPI.separateAxis = function(indicator){return ['ROC', 'MACD', 'RSI'].indexOf(indicator.name)>-1}
