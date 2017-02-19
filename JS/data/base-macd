@@ -1,0 +1,19 @@
+let macd = IND['MACD[9,12,26]-0'];
+let macdMA = IND['MACD[9,12,26]-1'];
+
+
+if(idx > 0){
+  let opened = portfolio.getOpenPositions()
+  if(opened.length === 0){
+    let shouldOpenAmount = macd[idx-1][1] < macdMA[idx-1][1] && macd[idx][1] > macdMA[idx][1] && 1;
+    if(shouldOpenAmount){
+      portfolio.markOpenPosition(shouldOpenAmount, dayData);
+    }
+  }
+  else {
+    let shouldClose = macd[idx][1] < macdMA[idx][1];
+    if(shouldClose){
+      portfolio.markClosePosition(opened[0], dayData);
+    }
+  }
+}

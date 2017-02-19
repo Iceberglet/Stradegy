@@ -4,7 +4,6 @@ const fs = require('fs');
 function createHandler(){
   return {
     createOrUpdateStrategy: function(cb, name, content){
-      console.log(name, content)
       fs.writeFile(dataFolder+name, content, cb)
     },
     readStrategyList: function(cb){

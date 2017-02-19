@@ -38,7 +38,7 @@ app.post('/portal', function(request, respond) {
   try{
     let action = request.body.action
     let args = request.body.args
-    console.log(args)
+    // console.log(args)
     if(typeof(args)==='string'){
       args = JSON.parse(unescape(request.body.args))
     }
