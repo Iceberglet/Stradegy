@@ -19,7 +19,8 @@ export const App = React.createClass({
         {name: 'EMA', params: [6]},
         {name: 'EMA', params: [12]},
         {name: 'ROC', params: [5]},
-        {name: 'RSI', params: [5]}
+        {name: 'RSI', params: [5]},
+        {name: 'ATR', params: [5]}
       ]
     }
   },

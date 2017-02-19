@@ -1,14 +1,6 @@
 
 const deepClone = (o)=>JSON.parse(JSON.stringify(o))
 
-// const tryAndLog = (f)=>{
-//   try{
-//     f()
-//   } catch(error){
-//     console.error(error)
-//   }
-// }
-
 //IMPORTANT ASSUMPTION: All indicators have continuous evaluations.
 //i.e. From a certain point onwards, each data point will have a unique indicator value point for each of the indicators associated
 export const StrategyExecutor = function(data, indicatorDataObj){
@@ -41,11 +33,15 @@ StrategyExecutor.prototype.run = function(strategy){
   })
   //Define 'current' portfolio or buySellStatus
   let portfolio = new PortfolioStatus()
+  let scope = {}
 
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{
     try{
       eval(strategy)
+      //******************************** TESTING GROUND **************************************
+
+      //******************************** TESTING GROUND **************************************
     }catch(err){
       console.log(err)
       return
@@ -60,6 +56,13 @@ const PortfolioAction = function(){
 }
 PortfolioAction.prototype.collect = function(){
   return Object.assign({}, this)
+}
+PortfolioAction.prototype.triggerStopLoss = function(price){
+  if(!this.stopLoss){
+    return false;
+  } else {
+    return (this.notional>0?price<this.stopLoss:price>this.stopLoss)
+  }
 }
 
 const PortfolioStatus = function(){

@@ -59,4 +59,4 @@ IndicatorAPI.getName = function(obj){return obj.name+JSON.stringify(obj.params)}
 
 IndicatorAPI.equals = function(a, b){return a.name===b.name && a.params.equals(b.params)}
 
-IndicatorAPI.separateAxis = function(indicator){return ['ROC', 'MACD', 'RSI'].indexOf(indicator.name)>-1}
+IndicatorAPI.separateAxis = function(indicator){return ['ROC', 'MACD', 'RSI', 'ATR'].indexOf(indicator.name)>-1}

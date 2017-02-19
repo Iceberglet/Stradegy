@@ -30,6 +30,7 @@ const textareaStyle = {
   marginRight: '5px',
   background: '#DDDDDD',
   resize: 'none',
+  height: '100%',
   overflow: 'scroll',
   whiteSpace: 'nowrap'
 }

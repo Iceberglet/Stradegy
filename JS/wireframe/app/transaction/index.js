@@ -6,7 +6,7 @@ const portal = (action, cb, ...args)=>{
   if(!args){
     args = '[]'
   }
-  var params = 'action='+action+'&args='+escape(JSON.stringify(args))
+  var params = 'action='+action+'&args='+encodeURIComponent(JSON.stringify(args))
 
   http.open('POST', url, true);
 
