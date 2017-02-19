@@ -1,0 +1,59 @@
+let shortEMA = IND['EMA[6]']
+let longEMA = IND['EMA[20]']
+let RSI = IND['RSI[5]']
+let ROC0 = IND['ROC[5]-0']
+let ROC1 = IND['ROC[5]-1']	//EMA of ROC0
+let ATR = IND['ATR[5]']
+let shortThreshold = 0.8 //If RSI Lower Than This, we short
+let longThreshold = 0.2 //If RSI Higher Than This, we long
+
+if(idx !== 0){
+  let opened = portfolio.getOpenPositions()
+  if(opened.length === 0){
+  	// console.log(ROC0[idx-1][1]-ROC1[idx-1][1],ROC0[idx][1]-ROC1[idx][1])
+    if(shortEMA[idx-1][1]>=longEMA[idx-1][1]){	//Considering Short
+      if(shortEMA[idx][1]<=longEMA[idx][1]/*&& RSI[idx][1]>shortThreshold*/){
+        if(scope.previousWasWin){
+        	scope.previousWasWin = false;
+        } else {
+          let action = portfolio.markOpenPosition(-1, dayData);
+          action.stopLoss = dayData[4] + ATR[idx][1];
+          console.log('Open Short At '+dayData[4], 'StopLoss ' + action.stopLoss)
+        }
+      }
+    } else {
+      if(shortEMA[idx][1]>=longEMA[idx][1] /*&& RSI[idx][1]<longThreshold*/){
+        if(scope.previousWasWin){
+          scope.previousWasWin = false;
+        } else {
+          let action = portfolio.markOpenPosition(1, dayData);
+          action.stopLoss = dayData[4] - ATR[idx][1];
+          console.log('Open Long At '+dayData[4], 'StopLoss ' + action.stopLoss)
+        }
+      }
+    }
+  } else {
+    let oldAction = opened[0], close = false;
+    if(oldAction.triggerStopLoss(dayData[4])){
+      close=true;
+      console.log('StopLoss At '+dayData[4])
+    } else {
+      //console.log(oldAction.notional > 0, RSI[idx][1], ROC0[idx][1]>=ROC0[idx-1][1])
+      if(oldAction.notional>0 && RSI[idx][1]>shortThreshold && ROC0[idx][1]>=ROC0[idx-1][1]){
+     	close=true;
+        console.log('Close At '+dayData[4])
+      } else if(oldAction.notional<0 && RSI[idx][1]<longThreshold && ROC0[idx][1]<=ROC0[idx-1][1]){
+      	close=true;
+        console.log('Close At '+dayData[4])
+      }
+    }
+    if(close){
+		let closeAction = portfolio.markClosePosition(oldAction, dayData);
+      	if(closeAction.pnl>0){
+          scope.previousWasWin = true
+        } else {
+          scope.previousWasWin = false
+        }
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { HighChart } from 'chart'
 const displayItems = {
   numberOfTrades: 'Number Of Trades',
   winningProbability: 'Winning Trades%',
-  // averagePnL:
+  averagePnL: 'Average PnL',
   totalPositionedDuration: 'Notional Weighted Position Holding Time',
   bestPnL: 'Best PnL',
   worstPnL: 'Worst PnL'
@@ -52,7 +52,7 @@ export const StrategyResult = React.createClass({
       series: [{
         type: 'scatter',
         name: 'Running PnL',
-        data: this.props.result.pnlSeries
+        data: this.props.result.pnlSeries || []
       }]
     }
   },

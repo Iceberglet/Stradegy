@@ -17,7 +17,7 @@ export const App = React.createClass({
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
         {name: 'EMA', params: [6]},
-        {name: 'EMA', params: [12]},
+        {name: 'EMA', params: [20]},
         {name: 'ROC', params: [5]},
         {name: 'RSI', params: [5]},
         {name: 'ATR', params: [5]}
