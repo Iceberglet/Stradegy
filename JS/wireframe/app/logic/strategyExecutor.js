@@ -86,7 +86,7 @@ const PortfolioStatus = function(){
       action.time = dayData[0]
       action.notional = -openPosition.notional
       action.price = dayData[4]
-      action.pnl = openPosition.notional * (dayData[4] - openPosition.price)// /openPosition.price
+      action.pnl = openPosition.notional * (dayData[4] - openPosition.price) / openPosition.price
       action.openPosition = openPosition
       actionList.push(action)
       return action
