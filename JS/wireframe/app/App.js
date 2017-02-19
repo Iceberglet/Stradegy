@@ -16,11 +16,11 @@ export const App = React.createClass({
       indicators: [
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
-        {name: 'EMA', params: [6]},
-        {name: 'EMA', params: [20]},
+        {name: 'MACD', params: [9,12,26]},
+        // {name: 'EMA', params: [26]},
         {name: 'ROC', params: [5]},
         {name: 'RSI', params: [5]},
-        {name: 'ATR', params: [5]}
+        // {name: 'ATR', params: [5]}
       ]
     }
   },
@@ -93,7 +93,7 @@ export const App = React.createClass({
         <Foldable label={'Indicators'} >
           <IndicatorPanel dataKey={this.state.dataKey} indicatorList={this.props.indicators} onAdd={this.onAddIndicator} onRemove={this.onRemoveIndicator} onChangeDataKey={this.onChangeDataKey}/>
         </Foldable>
-        <div style={{flex: 1, height: '500px'}}>
+        <div style={{flex: 1, height: '500px', maxWidth: '1000px'}}>
           <TopChart ref={tc=>{this.tc=tc}} dataKey={this.state.dataKey} indicatorConfig={this.props.indicators}/>
         </div>
       </div>
