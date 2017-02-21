@@ -33,7 +33,7 @@ StrategyExecutor.prototype.run = function(strategy){
   })
   //Define 'current' portfolio or buySellStatus
   let portfolio = new PortfolioStatus()
-  let scope = {}
+  let scope = {}, history = this.data
 
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{

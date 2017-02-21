@@ -16,6 +16,13 @@ export const StrategyResult = React.createClass({
     result: React.PropTypes.object
   },
 
+  componentDidUpdate(){
+    if(this.chartWrapper && this.props.result && this.props.result.pnlSeries){
+      let series = this.chartWrapper.getHighChart().series.find(s=>s.name==='Running PnL')
+      series.setData(this.props.result.pnlSeries)
+    }
+  },
+
   buildOptions(){
     return {
       rangeSelector: {
@@ -58,7 +65,7 @@ export const StrategyResult = React.createClass({
   },
 
   render(){
-    console.log(this.props.result)
+    // console.log(this.props.result)
     return (<div className='flex-container' style={{width: '800px', height: '100%', background: '#bfbfbf'}}>
       <div className='flex-item-2' style={{height: '100%'}}>
         {this.props.result && this.props.result.pnlSeries && <HighChart ref={c=>{this.chartWrapper=c}} options={this.buildOptions()}/>}

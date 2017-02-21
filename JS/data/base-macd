@@ -1,19 +1,29 @@
-let macd = IND['MACD[9,12,26]-0'];
-let macdMA = IND['MACD[9,12,26]-1'];
+let macd = IND['MACD[4,6,12]-0'];
+let macdMA = IND['MACD[4,6,12]-1'];
+let ATR = IND['ATR[12]'];
 
 
 if(idx > 0){
   let opened = portfolio.getOpenPositions()
   if(opened.length === 0){
-    let shouldOpenAmount = macd[idx-1][1] < macdMA[idx-1][1] && macd[idx][1] > macdMA[idx][1] && 1;
+    let shouldOpenAmount = macd[idx-1][1] < macdMA[idx-1][1] && macd[idx][1] > macdMA[idx][1] &&
+        history[idx-2][1] < history[idx-2][4] && history[idx-1][1] < history[idx-1][4] && history[idx][1] < history[idx][4] &&
+        macd[idx-3][1] < macd[idx-2][1] && macd[idx-2][1] < macd[idx-1][1] && macd[idx-1][1] < macd[idx][1] && 1;	//Must Have Consecutive Increase;
     if(shouldOpenAmount){
       portfolio.markOpenPosition(shouldOpenAmount, dayData);
+      scope.trailingStop = ATR[idx][1]
+      scope.maxAttained = dayData[4]
     }
   }
   else {
-    let shouldClose = macd[idx][1] < macdMA[idx][1];
+    let positionToClose = opened[0]
+    let shouldClose = dayData[4] < scope.maxAttained - scope.trailingStop//macd[idx][1] < macdMA[idx][1];
     if(shouldClose){
-      portfolio.markClosePosition(opened[0], dayData);
+      portfolio.markClosePosition(positionToClose, dayData);
+    } else {
+      if(dayData[4] > scope.maxAttained){
+        scope.maxAttained = dayData[4]
+      }
     }
   }
 }

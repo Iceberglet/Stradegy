@@ -111,9 +111,9 @@ export const TopChart = React.createClass({
         data: candleData,
         dataGrouping: {
           units: [
-              ['day', [3]],
-              ['week',[1, 2]],
-              ['month',[1, 3]]
+              ['day', [2, 4, 6]],
+              ['week',[1, 2, 3]],
+              ['month',[1, 2, 3]]
           ]
         }
       })
