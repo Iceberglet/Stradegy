@@ -22,6 +22,16 @@ export const StrategyExecutor = function(data, indicatorDataObj){
   //Now all data and indicators have same length and starting point!
 }
 
+export const extractIndicatorList = function(strategy){
+  let startIdx = strategy.search('#REF') + 5
+  let endIdx = strategy.search('#END') - 4
+  let requested = []
+  let request = (name, params)=>requested.push({name, params})
+  let str = strategy.substr(startIdx, endIdx)
+  eval(str)
+  return requested
+}
+
 //Callback object is used to emit result (time0-1, price0-1)
 StrategyExecutor.prototype.run = function(strategy){
   /********************** Define API ****************************/
@@ -35,10 +45,11 @@ StrategyExecutor.prototype.run = function(strategy){
   let portfolio = new PortfolioStatus()
   let scope = {}, history = this.data
 
+  let str = strategy.substr(strategy.search('#END') + 4)
   //this.data and this.indicatorDataObj[name] are of the same length now
   this.data.forEach((dayData, idx)=>{
     try{
-      eval(strategy)
+      eval(str)
       //******************************** TESTING GROUND **************************************
 
       //******************************** TESTING GROUND **************************************

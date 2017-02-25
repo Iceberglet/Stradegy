@@ -1,0 +1,36 @@
+#DEF
+
+request('Ceiling', [20]);
+request('Floor', [20]);
+request('ATR%', [20]);
+
+#END
+
+let Ceiling = IND['Ceiling[20]'];
+let Floor = IND['Floor[20]'];
+let ATR = IND['ATR%[20]'];
+
+
+if(idx > 0){
+  let opened = portfolio.getOpenPositions()
+  if(opened.length === 0){
+    let shouldOpenAmount = dayData[4] > Ceiling[idx-1][1] && 1;
+    if(!shouldOpenAmount){
+      shouldOpenAmount = dayData[4] < Floor[idx-1][1] && -1;
+    }
+    if(shouldOpenAmount){
+      portfolio.markOpenPosition(shouldOpenAmount, dayData);
+      //scope.trailingStop = ATR[idx][1]
+      //scope.maxAttained = dayData[4]
+    }
+  }
+  else {
+    let positionToClose = opened[0];
+    let shouldClose = true;
+    if(shouldClose){
+      portfolio.markClosePosition(positionToClose, dayData);
+    } else {
+      
+    }
+  }
+}

@@ -7,7 +7,7 @@ import 'app/ui/styles/codemirror.css';
 import 'codemirror/mode/javascript/javascript.js';
 import { TopChart, IndicatorPanel, StrategyPanel } from 'app/ui/components'
 import { Foldable } from 'app/ui/primitives/foldable/Foldable'
-import { StrategyExecutor } from 'app/logic/strategyExecutor'
+import { StrategyExecutor, extractIndicatorList } from 'app/logic/strategyExecutor'
 import { analyse } from 'app/logic/resultAnalyser'
 
 export const App = React.createClass({
@@ -17,7 +17,7 @@ export const App = React.createClass({
         // {name: 'Floor', params: [100]},
         // {name: 'Ceiling', params: [100]},
         {name: 'MACD', params: [4,6,12]},
-        {name: 'MACD', params: [9,12,26]},
+        {name: 'MACD', params: [9,12,26]}
         // {name: 'EMA', params: [26]},
         // {name: 'ROC', params: [5]},
         // {name: 'RSI', params: [5]},
@@ -61,7 +61,6 @@ export const App = React.createClass({
   },
 
   test(strategy){
-    let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
     /*
     if(idx !== 0){
       let opened = portfolio.getOpenPositions()
@@ -79,6 +78,9 @@ export const App = React.createClass({
     }
     */
 
+    this.tc.applyIndicators(extractIndicatorList(strategy))
+    
+    let strategyExecutor = new StrategyExecutor(this.getData(), this.getIndicators())
     let res = strategyExecutor.run(strategy)
     let toScatterBean = (action)=>[action.time, action.price, action.notional]
     this.tc.addOpenLongSeries(res.openLong.map(toScatterBean))
