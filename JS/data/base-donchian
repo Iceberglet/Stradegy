@@ -1,36 +1,45 @@
 #DEF
 
-request('Ceiling', [20]);
-request('Floor', [20]);
+request('Ceiling', [50]);
+request('Floor', [50]);
 request('ATR%', [20]);
 
 #END
 
-let Ceiling = IND['Ceiling[20]'];
-let Floor = IND['Floor[20]'];
+let Ceiling = IND['Ceiling[50]'];
+let Floor = IND['Floor[50]'];
 let ATR = IND['ATR%[20]'];
 
 
 if(idx > 0){
   let opened = portfolio.getOpenPositions()
   if(opened.length === 0){
-    let shouldOpenAmount = dayData[4] > Ceiling[idx-1][1] && 1;
-    if(!shouldOpenAmount){
-      shouldOpenAmount = dayData[4] < Floor[idx-1][1] && -1;
+    let shouldOpenAmount = false;
+    if(ATR[idx][1] > 55){
+       shouldOpenAmount = (dayData[4] > Ceiling[idx-1][1] && 1) || (dayData[4] < Floor[idx-1][1] && -1);
     }
     if(shouldOpenAmount){
       portfolio.markOpenPosition(shouldOpenAmount, dayData);
-      //scope.trailingStop = ATR[idx][1]
-      //scope.maxAttained = dayData[4]
+      scope.trailingStop = 1
+      scope.maxAttained = dayData[4]
     }
   }
   else {
     let positionToClose = opened[0];
-    let shouldClose = true;
+    let shouldClose = positionToClose.notional > 0 ? 
+        dayData[4] < positionToClose.price - 0.5*scope.trailingStop || dayData[4] < scope.maxAttained - scope.trailingStop : 
+    	dayData[4] > positionToClose.price + 0.5*scope.trailingStop || dayData[4] > scope.maxAttained + scope.trailingStop;
+    
+    
+    
     if(shouldClose){
       portfolio.markClosePosition(positionToClose, dayData);
     } else {
-      
+      if(positionToClose.notional > 0 && dayData[2] > scope.maxAttained){
+        scope.maxAttained = dayData[2]		//High
+      } else if (positionToClose.notional < 0 && dayData[3] < scope.maxAttained){
+        scope.maxAttained = dayData[3]		//Low
+      }
     }
   }
 }

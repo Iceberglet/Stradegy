@@ -18,7 +18,7 @@ export const analyse = (data, openLong, openShort, close)=>{
     //Probability of winning trade
     winningProbability: close.filter(c=>c.pnl>0).length / close.length,
     //Average PnL
-    averagePnL: close.reduce((pre,c)=>pre+c.pnl,0)/close.length,
+    averagePnL: close.reduce((pre,c)=>pre+c.pnl,0),// /close.length,
     //Notional weighted duration of holding positions
     totalPositionedDuration: close.reduce((pre,c)=>Math.abs(c.notional)*(c.time-c.openPosition.time)+pre,0)/millisecondsInDay,
     //Best Trade pnl
