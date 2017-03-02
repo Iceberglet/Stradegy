@@ -1,8 +1,8 @@
 import React from 'react'
 import {FancyInput, FancySelect} from 'app/ui/primitives/fancyForm'
 import { INDICATORS, IndicatorAPI } from 'app/logic/indicators'
-import * as DATA from 'app/data'
-const dataKeys = Object.keys(DATA)
+import {getDataKeys} from 'app/data'
+const dataKeys = getDataKeys()
 const indicatorNames = Object.keys(INDICATORS)
 
 export const IndicatorPanel = React.createClass({

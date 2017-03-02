@@ -1,5 +1,5 @@
 import React from 'react'
-import * as DATA from 'app/data'
+import { getData } from 'app/data'
 import { INDICATORS, IndicatorAPI} from 'app/logic/indicators'
 import { CandleChart } from 'app/ui/components'
 
@@ -24,7 +24,7 @@ export const TopChart = React.createClass({
   },
 
   addIndicator(indicator){
-    let data = INDICATORS[indicator.name](...indicator.params)(DATA[this.props.dataKey])
+    let data = INDICATORS[indicator.name](...indicator.params)(getData(this.props.dataKey))
     let stripped
     if(data[0].length>2){
       stripped = Array(data[0].length-1).fill([])
@@ -106,7 +106,7 @@ export const TopChart = React.createClass({
 
   addBaseSeries(){
     if(this.props.dataKey){
-      let candleData = DATA[this.props.dataKey]
+      let candleData = getData(this.props.dataKey)
       this.candleChart && this.candleChart.addOrUpdateSeries({
         type: 'candlestick',
         metaType: 'data',

@@ -1,18 +1,26 @@
-let macd = IND['MACD[4,6,12]-0'];
-let macdMA = IND['MACD[4,6,12]-1'];
-let ATR = IND['ATR[12]'];
+#DEF
+
+request('MACD', [20,40,70]);
+request('ATR%', [20]);
+request('EMA', [40]);
+
+#END
+
+let macd = IND['MACD[20,40,70]-0'];
+let macdMA = IND['MACD[20,40,70]-1'];
+let ATR = IND['ATR%[20]'];
+let EMA = IND['EMA[40]'];
 
 
 if(idx > 0){
   let opened = portfolio.getOpenPositions()
   if(opened.length === 0){
-    let shouldOpenAmount = macd[idx-1][1] < macdMA[idx-1][1] && macd[idx][1] > macdMA[idx][1] &&
-        history[idx-2][1] < history[idx-2][4] && history[idx-1][1] < history[idx-1][4] && history[idx][1] < history[idx][4] &&
-        macd[idx-3][1] < macd[idx-2][1] && macd[idx-2][1] < macd[idx-1][1] && macd[idx-1][1] < macd[idx][1] && 1;	//Must Have Consecutive Increase;
-    if(shouldOpenAmount){
-      portfolio.markOpenPosition(shouldOpenAmount, dayData);
-      scope.trailingStop = ATR[idx][1]
-      scope.maxAttained = dayData[4]
+    if(dayData[3] < EMA[idx][1] && EMA[idx][1] < dayData[2] && dayData[1] < dayData[4]){	//If DayData Cuts Through EMA
+      if(macd[idx][1] > macdMA[idx][1]){	//If MACD shows upward trend
+        portfolio.markOpenPosition(1, dayData);
+      	scope.trailingStop = 0.5;//ATR[idx][1]
+      	scope.maxAttained = dayData[4];
+      }
     }
   }
   else {
