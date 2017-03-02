@@ -69,7 +69,7 @@ export const StrategyPanel = React.createClass({
   },
 
   componentWillReceiveProps(props){
-    this.onChangeCode(props.code)
+    // this.onChangeCode(props.code)
   },
 
   handleTab(e){

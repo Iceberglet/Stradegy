@@ -1,35 +1,46 @@
 #DEF
 
 request('MACD', [20,40,70]);
-request('ATR%', [20]);
+//request('ATR%', [20]);
 request('EMA', [40]);
 
 #END
 
 let macd = IND['MACD[20,40,70]-0'];
 let macdMA = IND['MACD[20,40,70]-1'];
-let ATR = IND['ATR%[20]'];
+//let ATR = IND['ATR%[20]'];
 let EMA = IND['EMA[40]'];
 
 
 if(idx > 0){
   let opened = portfolio.getOpenPositions()
   if(opened.length === 0){
+    console.log(dayData[3], EMA[idx][1], dayData[2], dayData[1] < dayData[4])
     if(dayData[3] < EMA[idx][1] && EMA[idx][1] < dayData[2] && dayData[1] < dayData[4]){	//If DayData Cuts Through EMA
       if(macd[idx][1] > macdMA[idx][1]){	//If MACD shows upward trend
         portfolio.markOpenPosition(1, dayData);
       	scope.trailingStop = 0.5;//ATR[idx][1]
       	scope.maxAttained = dayData[4];
       }
+    } else if (dayData[3] < EMA[idx][1] && EMA[idx][1] < dayData[2] && dayData[1] > dayData[4]){	//If DayData Cuts Through EMA Downwards
+      if(macd[idx][1] < macdMA[idx][1]){	//If MACD shows downward trend
+        portfolio.markOpenPosition(-1, dayData);
+      	scope.trailingStop = 0.7;//ATR[idx][1]
+      	scope.maxAttained = dayData[4];
+      }
     }
   }
   else {
     let positionToClose = opened[0]
-    let shouldClose = dayData[4] < scope.maxAttained - scope.trailingStop//macd[idx][1] < macdMA[idx][1];
+    let shouldClose = (positionToClose.notional > 0 && dayData[4] < scope.maxAttained - scope.trailingStop) ||
+    	(positionToClose.notional < 0 && dayData[4] > scope.maxAttained + scope.trailingStop);
     if(shouldClose){
       portfolio.markClosePosition(positionToClose, dayData);
     } else {
-      if(dayData[4] > scope.maxAttained){
+      if(positionToClose.notional > 0 && dayData[4] > scope.maxAttained){
+        scope.maxAttained = dayData[4]
+      }
+      else if(positionToClose.notional < 0 && dayData[4] < scope.maxAttained){
         scope.maxAttained = dayData[4]
       }
     }

@@ -5,6 +5,8 @@ import { HighChart } from 'chart'
 const displayItems = {
   numberOfTrades: 'Number Of Trades',
   winningProbability: 'Winning Trades%',
+  longestWin: 'Win Streak',
+  longestLose: 'Lose Streak',
   averagePnL: 'Average PnL',
   totalPositionedDuration: 'Notional Weighted Position Holding Time',
   bestPnL: 'Best PnL',
